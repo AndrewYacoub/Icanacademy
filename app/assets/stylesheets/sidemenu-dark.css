@@ -352,9 +352,12 @@
   z-index: 10;
   background-color:#1c2938;
   box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
-  -webkit-transition: left 0.3s ease, width 0.3s ease;
-  -o-transition: left 0.3s ease, width 0.3s ease;
-  transition: left 0.3s ease, width 0.3s ease;
+  -webkit-transition: left 0.3s ease,
+ width 0.3s ease;
+  -o-transition: left 0.3s ease,
+ width 0.3s ease;
+  transition: left 0.3s ease,
+ width 0.3s ease;
  background:#1c2938;
  border-top: 1px solid rgba(107,122,144,0.1);
  
@@ -495,9 +498,12 @@
 	font-size: 14px;
 	font-weight:400;
 	margin: 1px 0;
-	-webkit-transition: border-left-color 0.3s ease,	background-color 0.3s ease;
-	-o-transition: border-left-color 0.3s ease,	background-color 0.3s ease;
-	transition: border-left-color 0.3s ease,	background-color 0.3s ease;
+	-webkit-transition: border-left-color 0.3s ease,
+	background-color 0.3s ease;
+	-o-transition: border-left-color 0.3s ease,
+	background-color 0.3s ease;
+	transition: border-left-color 0.3s ease,
+	background-color 0.3s ease;
 	border-bottom: 1px solid  rgba(255,255,255,0.04);
 	border-radius: 7px;
 }
@@ -541,9 +547,9 @@
 .app-sidebar .side-menu__item:hover {
 	color:#618afb;	
 }
-.slide-menu li ul li a:{
-  font-size:12px !important;
-  font-weight:300;
+.slide-menu li ul li a {
+  font-size: 12px !important;
+  font-weight: 300;
 }
 .app-sidebar .side-menu__item.active:hover {
    color:#fff !important;
