@@ -14,7 +14,7 @@ gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "mysql2"
+gem 'pg'
 gem "devise"
 gem "activeadmin"
 gem 'flatpickr'

@@ -291,7 +291,6 @@ GEM
     msgpack (1.7.2)
     multi_json (1.15.0)
     mutex_m (0.2.0)
-    mysql2 (0.5.6)
     net-http (0.4.1)
       uri
     net-imap (0.4.10)
@@ -318,6 +317,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     os (1.1.4)
+    pg (1.5.6)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -488,7 +488,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   letter_opener
-  mysql2
+  pg
   pry
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
