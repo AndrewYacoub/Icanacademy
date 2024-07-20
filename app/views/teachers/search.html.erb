@@ -1,0 +1,18 @@
+<h1>Search for Teachers</h1>
+<%= form_with url: teachers_search_path, method: :get, local: true do |form| %>
+  <%= form.label :query, "Search by name:" %>
+  <%= form.text_field :query %>
+  <%= form.submit "Search" %>
+<% end %>
+
+<% if @teachers.present? %>
+  <ul>
+    <% @teachers.each do |teacher| %>
+      <li>
+        <%= link_to teacher.email, teacher_path(teacher) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No teachers found.</p>
+<% end %>

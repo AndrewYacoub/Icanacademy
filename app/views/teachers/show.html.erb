@@ -1,0 +1,18 @@
+<h1><%= @teacher.email %>'s Groups</h1>
+<ul>
+  <% @groups.each do |group| %>
+    <li>
+      <h2><%= group.name %></h2>
+      <p><%= group.start_date %></p>
+      <p><%= group.end_date %></p>
+      <p><%= group.recurrence_days %></p>
+      <p><%= group.start_time %></p>
+      <p><%= group.end_time %></p>
+      <% if current_user.groups.include?(group) %>
+        <button disabled>Already Enrolled</button>
+      <% else %>
+        <%#= button_to 'Enroll', enroll_course_group_path(@course, group), method: :post %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

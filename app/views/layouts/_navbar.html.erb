@@ -1,0 +1,47 @@
+<!--app-header-->
+<div class="app-header header d-flex">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
+      <a class="header-brand" href="#">
+        <%= image_tag("brand/logo.png", class: "header-brand-img main-logo", alt: "Hogo logo") %>
+        <%= image_tag("brand/icon.png", class: "header-brand-img icon-logo", alt:"Hogo logo") %> 
+      </a>
+      <!-- logo-->
+      <% if current_user %>
+      <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-toggle="sidebar" href="#"></a>
+      <%end%>
+      <a href="#" data-toggle="search" class="nav-link nav-link navsearch">
+        <i class="fa fa-search"></i>
+      </a>
+      <!-- search icon -->
+
+      <!-- Right-aligned horizontal navigation list -->
+      <div class="ml-auto d-flex align-items-center">
+        <ul class="navbar-nav d-flex flex-row align-items-center">
+          <% unless current_user %>
+            <li class="nav-item">
+              <a class="nav-link mr-3 navbar-item" href="#contact">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mr-3 navbar-item" href="#activities">Activities</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mr-3 navbar-item" href="#about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-primary mr-3" href=<%= join_now_home_index_path %>><i class="fe fe-plus mr-1"></i>Join Now</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link navbar-item mr-3"  href="/users/sign_in"> Login</a>
+            </li>
+          <% else %>
+            <li class="nav-item" >
+              <%= button_to "Log out", destroy_user_session_path, method: :delete, class: 'btn btn-success navbar-item' %>
+            </li>
+          <% end %>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

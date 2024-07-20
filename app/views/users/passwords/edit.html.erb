@@ -1,0 +1,41 @@
+<div class="page-content">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="../assets/images/brand/logo.png" alt="logo" class="mb-3">
+                            <h3>Change Your Password</h3>
+                            <p class="text-muted">Please enter your new password below.</p>
+                        </div>
+                        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+                            <%= render "users/shared/error_messages", resource: resource %>
+                            <%= f.hidden_field :reset_password_token %>
+
+                            <div class="form-group mb-3">
+                                <%= f.label :password, "New password" %>
+                                <% if @minimum_password_length %>
+                                    <small class="form-text text-muted">
+                                        (<%= @minimum_password_length %> characters minimum)
+                                    </small>
+                                <% end %>
+                                <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <%= f.label :password_confirmation, "Confirm new password" %>
+                                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+                            </div>
+
+                            <div class="actions">
+                                <%= f.submit "Change my password", class: "btn btn-primary btn-block" %>
+                            </div>
+                        <% end %>
+                        <%= render "users/shared/links" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

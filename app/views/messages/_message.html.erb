@@ -1,0 +1,10 @@
+<div class="cont-<%= message.user.id %> mb-3">
+  <div class="message-box msg-<%= message.user.id %> p-3 rounded shadow-sm bg-light text-dark">
+    <div class="d-flex align-items-center mb-2">
+      <% unless message.room.is_private %>
+        <h6 class="name mb-0 color-white"><strong><%= message.user.email %></strong></h6>
+      <% end %>
+    </div>
+    <p class="mb-0"><%= message.content %></p>
+  </div>
+</div>

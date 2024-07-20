@@ -1,0 +1,67 @@
+<div class="page-content">
+    <div class="container text-center text-dark">
+        <div class="row">
+            <div class="col-lg-12 d-block mx-auto"> <!-- Adjust the outer column width if necessary -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center mb-6">
+                        </div>
+                        <h3>Create a new Student Account</h3>
+                          <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+                            <%= render "users/shared/error_messages", resource: resource %>
+                              <%= f.hidden_field :type, value: 'Student' %>
+                            <% fields = {
+                              first_name: {placeholder: "First Name", icon: "fa fa-user"},
+                              last_name: {placeholder: "Last Name", icon: "fa fa-user"},
+                              email: {placeholder: "Enter Email", icon: "fa fa-envelope"},
+                              phone_number: {placeholder: "Phone Number", icon: "fa fa-phone"},
+                              education_level: {placeholder: "Education Level", icon: "fa fa-graduation-cap"},
+                              country: {placeholder: "Country", icon: "fa fa-globe"},
+                              address: {placeholder: "Address", icon: "fa fa-home"},
+                              parent_phone_number: {placeholder: "Parent Phone Number", icon: "fa fa-phone"},
+                              password: {placeholder: "Password", icon:"fa fa-lock"},
+                              password_confirmation: {placeholder: "Confirm Password", icon:"fa fa-lock"},
+                            } %>
+
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <% [:first_name, :last_name, :email, :phone_number, :parent_phone_number].each do |field| %>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-addon bg-white"><i class="<%= fields[field][:icon] %> w-4"></i></span>
+                                            <%= f.text_field field, autofocus: (field == :first_name), autocomplete: field.to_s, placeholder: fields[field][:placeholder], class: "form-control" %>
+                                        </div>
+                                    <% end %>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <% [:education_level, :country, :address, :password, :password_confirmation].each do |field| %>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-addon bg-white"><i class="<%= fields[field][:icon] %> w-4"></i></span>
+                                            <%if field == :password || field == :password_confirmation%>
+                                                <%= f.password_field field, placeholder: fields[field][:placeholder], class: "form-control" %>
+                                            <% else %>
+                                            <%= f.text_field field, placeholder: fields[field][:placeholder], class: "form-control" %>
+                                            <% end %>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+
+                            <% if @minimum_password_length %>
+                                <em>password <%= @minimum_password_length %> characters minimum</em><br />
+                            <% end %>
+                            <div class="row justify-content-center">
+                                <div class="col-6">
+                                    <%= f.submit "Create a new account", class: "btn btn-primary btn-block px-4" %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <%= render "users/shared/registration_links" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

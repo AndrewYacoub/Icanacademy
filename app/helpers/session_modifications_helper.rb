@@ -1,0 +1,2 @@
+module SessionModificationsHelper
+end

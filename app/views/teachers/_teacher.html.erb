@@ -1,0 +1,8 @@
+<% if @single_room && @single_room.participant?(@single_room, teacher) %>
+  <% isActive =  'active' %>
+<% else %>
+  <% isActive = '' %>
+<% end %>
+<li class="list-group-item d-flex align-items-center user_list_item <%= isActive %>">
+  <%= link_to teacher.email, teacher, class:'mr-auto username' %>
+</li>

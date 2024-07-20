@@ -1,0 +1,123 @@
+<h1>Edit Homework</h1>
+
+<%= form_with(model: [@group.course, @group, @homework], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lesson %>
+    <%= form.text_field :lesson %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div id="questions">
+    <h3>Questions</h3>
+    <% if @homework.google_form_id.present? %>
+      <p>Questions cannot be edited once the Google Form is created. Please delete this homework and create a new one if changes are needed.</p>
+    <% else %>
+      <div class="question field">
+        <%= label_tag 'question_1', 'Question 1' %>
+        <%= text_field_tag 'questions[][text]', nil, id: 'question_1', class: 'form-control' %>
+        <%= label_tag 'question_1_type', 'Type' %>
+        <%= select_tag 'questions[][type]', options_for_select([['Text', 'text'], ['Multiple Choice', 'multiple_choice']]), id: 'question_1_type', class: 'form-control question-type' %>
+
+        <div class="choices-container" style="display:none;">
+          <h4>Choices</h4>
+          <%= text_field_tag 'questions[][choices][]', nil, placeholder: 'Choice 1', class: 'form-control' %>
+          <%= text_field_tag 'questions[][choices][]', nil, placeholder: 'Choice 2', class: 'form-control' %>
+          <%= button_to 'Add Choice', '#', class: 'btn btn-secondary add-choice' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <% if @homework.google_form_id.present? %>
+      <%= form.submit 'Update Homework', class: 'btn btn-primary' %>
+    <% else %>
+      <%= button_to 'Add Question', '#', id: 'add-question', class: 'btn btn-secondary' %>
+      <%= form.submit 'Create Homework', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary' %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addQuestionButton = document.getElementById('add-question');
+    const questionsContainer = document.getElementById('questions');
+
+    let questionCount = 1;
+
+    addQuestionButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      questionCount++;
+
+      const questionDiv = document.createElement('div');
+      questionDiv.classList.add('question', 'field');
+
+      const questionLabel = document.createElement('label');
+      questionLabel.setAttribute('for', 'question_' + questionCount);
+      questionLabel.textContent = 'Question ' + questionCount;
+
+      const questionInput = document.createElement('input');
+      questionInput.setAttribute('type', 'text');
+      questionInput.setAttribute('name', 'questions[][text]');
+      questionInput.setAttribute('id', 'question_' + questionCount);
+      questionInput.classList.add('form-control');
+
+      const typeLabel = document.createElement('label');
+      typeLabel.setAttribute('for', 'question_' + questionCount + '_type');
+      typeLabel.textContent = 'Type';
+
+      const typeSelect = document.createElement('select');
+      typeSelect.setAttribute('name', 'questions[][type]');
+      typeSelect.setAttribute('id', 'question_' + questionCount + '_type');
+      typeSelect.classList.add('form-control', 'question-type');
+      typeSelect.innerHTML = '<option value="text">Text</option><option value="multiple_choice">Multiple Choice</option>';
+
+      const choicesContainer = document.createElement('div');
+      choicesContainer.classList.add('choices-container');
+      choicesContainer.style.display = 'none';
+      choicesContainer.innerHTML = `
+        <h4>Choices</h4>
+        <input type="text" name="questions[][choices][]" placeholder="Choice 1" class="form-control">
+        <input type="text" name="questions[][choices][]" placeholder="Choice 2" class="form-control">
+        <button class="btn btn-secondary add-choice">Add Choice</button>
+      `;
+
+      typeSelect.addEventListener('change', function() {
+        if (this.value === 'multiple_choice') {
+          choicesContainer.style.display = 'block';
+        } else {
+          choicesContainer.style.display = 'none';
+        }
+      });
+
+      choicesContainer.querySelector('.add-choice').addEventListener('click', function(event) {
+        event.preventDefault();
+        const newChoice = document.createElement('input');
+        newChoice.setAttribute('type', 'text');
+        newChoice.setAttribute('name', 'questions[][choices][]');
+        newChoice.setAttribute('placeholder', 'Choice ' + (choicesContainer.querySelectorAll('input').length + 1));
+        newChoice.classList.add('form-control');
+        choicesContainer.insertBefore(newChoice, this);
+      });
+
+      questionDiv.appendChild(questionLabel);
+      questionDiv.appendChild(questionInput);
+      questionDiv.appendChild(typeLabel);
+      questionDiv.appendChild(typeSelect);
+      questionDiv.appendChild(choicesContainer);
+
+      questionsContainer.appendChild(questionDiv);
+    });
+  });
+</script>

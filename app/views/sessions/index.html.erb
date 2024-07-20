@@ -1,0 +1,12 @@
+<h1>Sessions</h1>
+<table>
+  <% @sessions.each do |session| %>
+    <tr>
+      <td><%= session.start_date %></td>
+      <td><%= link_to 'Show', course_group_session_path(@course, @group, session) %></td>
+      <td><%= link_to 'Edit', edit_course_group_session_path(@course, @group, session) %></td>
+      <td><%= link_to 'Delete', course_group_session_path(@course, @group, session), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+<%= link_to 'New Session', new_course_group_session_path(@course, @group) %>

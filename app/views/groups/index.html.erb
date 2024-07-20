@@ -1,0 +1,8 @@
+<h1>All Groups</h1>
+<ul>
+  <% @groups.each do |group| %>
+    <li><%= link_to group.name, course_group_path(group.course, group) %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Add Group', new_course_group_path(current_course) %>

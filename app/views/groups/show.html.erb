@@ -1,0 +1,111 @@
+<h1 class="display-4 mb-4">Group Details</h1>
+
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary ml-2' %>
+  <%= link_to 'Create Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
+  <%= link_to 'Edit Group', edit_course_group_path(@group.course, @group), class: 'btn btn-warning ml-2' %>
+  <%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary ml-2' %>
+  <%= link_to 'Chat Room', course_group_room_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Course</h5>
+    <p class="card-text"><%= @group.name %></p>
+    <h5 class="card-title">Dates</h5>
+    <p class="card-text">Start Date: <%= @group.start_date %></p>
+    <p class="card-text">End Date: <%= @group.end_date %></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Session Details</h5>
+    <p class="card-text">Start Time: <%= @group.start_time&.strftime("%I:%M %p") || "Not set" %></p>
+    <p class="card-text">End Time: <%= @group.end_time&.strftime("%I:%M %p") || "Not set" %></p>
+    <p class="card-text">Recurrence Days: <%= @group.recurrence_days.present? ? @group.recurrence_days.join(', ') : "Not set" %></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Enrollments</h5>
+    <%= link_to 'Enroll', group_enrollments_path(@group), method: :post, class: 'btn btn-success mb-3' %>
+    <ul class="list-group">
+      <% @group.enrollments.each do |enrollment| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <%= enrollment.student.email %>
+          <%= link_to 'Unenroll', group_enrollment_path(@group, enrollment), method: :delete, class: 'btn btn-danger btn-sm' %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<h1><%= @group.name %> Sessions</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Google Meet Link</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @group.sessions.each do |session| %>
+    <tr>
+      <td><%= session.start_time %></td>
+      <td><%= session.end_time %></td>
+      <td><%= link_to 'Join Meeting', session.google_meet_link %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Add New Session Modification</h5>
+    <%= form_with(model: [ @course, @group, @group.session_modifications.build ], local: true, html: { class: 'form-horizontal' }) do |form| %>
+      <div class="form-group">
+        <%= form.label :date, "Date of Modification", class: 'control-label' %>
+        <%= form.date_field :date, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= form.label :start_time, "Start Time", class: 'control-label' %>
+        <%= form.time_select :start_time, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= form.label :end_time, "End Time", class: 'control-label' %>
+        <%= form.time_select :end_time, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= form.submit "Create Modification", class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<h3 class="mt-4">List of Session Modifications</h3>
+<div class="card mb-4">
+  <div class="card-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @group.session_modifications.each do |modification| %>
+          <tr>
+            <td><%= modification.date %></td>
+            <td><%= modification.start_time ? modification.start_time.strftime("%I:%M %p") : "Not set" %></td>
+            <td><%= modification.end_time ? modification.end_time.strftime("%I:%M %p") : "Not set" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

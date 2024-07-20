@@ -1,0 +1,116 @@
+<style>
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-label {
+    font-weight: bold;
+  }
+  .card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+  }
+</style>
+
+<%= form_with(model: [@group.course, @group, @homework], local: true, id: 'homework-form', class: 'needs-validation', novalidate: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :lesson, class: 'form-label' %>
+    <%= form.text_field :lesson, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description, class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :link, class: 'form-label' %>
+    <%= form.text_field :link, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :file, class: 'form-label' %>
+    <%= form.file_field :file, class: 'form-control-file' %>
+  </div>
+
+  <h3>Questions</h3>
+  <div id="questions">
+    <% 1.upto(3) do |index| %>
+      <div class="question card mb-3 p-3" data-index="<%= index %>">
+        <div class="form-group">
+          <%= label_tag "questions[#{index}][text]", "Question Text", class: 'form-label' %>
+          <%= text_field_tag "questions[#{index}][text]", nil, class: 'form-control', required: true %>
+        </div>
+        <div class="form-group">
+          <%= label_tag "questions[#{index}][type]", "Question Type", class: 'form-label' %>
+          <%= select_tag "questions[#{index}][type]", options_for_select([['Multiple Choice', 'multiple_choice'], ['Checkbox', 'checkbox'], ['Dropdown', 'dropdown']]), class: 'form-control', required: true %>
+        </div>
+        <div class="form-group">
+          <%= label_tag "questions[#{index}][choices]", "Choices (comma-separated)", class: 'form-label' %>
+          <%= text_field_tag "questions[#{index}][choices]", nil, class: 'form-control', required: true %>
+        </div>
+        <div class="form-group">
+          <%= label_tag "questions[#{index}][correct_answer]", "Correct Answer", class: 'form-label' %>
+          <%= text_field_tag "questions[#{index}][correct_answer]", nil, class: 'form-control', required: true %>
+        </div>
+        <%= link_to 'Remove', '#', class: 'remove-question btn btn-danger btn-sm' %>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to 'Add Question', '#', id: 'add-question', class: 'btn btn-secondary mb-3' %>
+  <%= form.submit 'Create Homework', class: 'btn btn-primary' %>
+<% end %>
+
+<%= link_to 'Back', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary mt-3' %>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const questionsContainer = document.getElementById('questions');
+  let questionIndex = questionsContainer.querySelectorAll('.question').length;
+
+  document.getElementById('add-question').addEventListener('click', (e) => {
+    e.preventDefault();
+    questionIndex++;
+    const questionTemplate = `
+      <div class="question card mb-3 p-3" data-index="${questionIndex}">
+        <div class="form-group">
+          <label for="questions_${questionIndex}_text" class="form-label">Question Text</label>
+          <input type="text" name="questions[${questionIndex}][text]" id="questions_${questionIndex}_text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="questions_${questionIndex}_type" class="form-label">Question Type</label>
+          <select name="questions[${questionIndex}][type]" id="questions_${questionIndex}_type" class="form-control" required>
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="checkbox">Checkbox</option>
+            <option value="dropdown">Dropdown</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="questions_${questionIndex}_choices" class="form-label">Choices (comma-separated)</label>
+          <input type="text" name="questions[${questionIndex}][choices]" id="questions_${questionIndex}_choices" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="questions_${questionIndex}_correct_answer" class="form-label">Correct Answer</label>
+          <input type="text" name="questions[${questionIndex}][correct_answer]" id="questions_${questionIndex}_correct_answer" class="form-control" required>
+        </div>
+        <a href="#" class="remove-question btn btn-danger btn-sm">Remove</a>
+      </div>
+    `;
+    questionsContainer.insertAdjacentHTML('beforeend', questionTemplate);
+  });
+
+  questionsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-question')) {
+      e.preventDefault();
+      e.target.closest('.question').remove();
+    }
+  });
+});
+</script>
+
+

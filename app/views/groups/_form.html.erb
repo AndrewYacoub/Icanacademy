@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">New Group for <%= @course.title %></h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<%= form_with(model: [@course, @group], local: true, html: { class: 'form-horizontal' }) do |form| %>
+  <div class="modal-body">
+    <div class="form-group">
+      <%= form.label :name, "Group Name", class: 'control-label' %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :start_date, "Start Date", class: 'control-label' %>
+      <%= form.date_field :start_date, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :end_date, "End Date", class: 'control-label' %>
+      <%= form.date_field :end_date, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :start_time, "Session Start Time", class: 'control-label' %>
+      <%= form.time_select :start_time, {}, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :end_time, "Session End Time", class: 'control-label' %>
+      <%= form.time_select :end_time, {}, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :recurrence_days, "Recurrence Days", class: 'control-label' %>
+      <%= form.select :recurrence_days,
+                      options_for_select(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], @group.recurrence_days),
+                      { include_blank: false },
+                      { multiple: true, size: 7, class: 'form-control' } %>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <%= form.submit "Create Group", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,25 @@
+<!-- app/views/teachers/pending_enrollments.html.erb -->
+<h1>Pending Enrollments</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Group</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @pending_enrollments.each do |enrollment| %>
+      <tr>
+        <td><%= enrollment.student.email %></td>
+        <td><%= enrollment.group.name %></td>
+        <td>
+        <td>
+            <%= button_to 'Approve', approve_by_teacher_enrollment_path(enrollment, group_id: enrollment.group_id), method: :put, form: { data: { turbo: false } } %>
+            <%= button_to 'Decline', decline_by_teacher_enrollment_path(enrollment), method: :put, form: { data: { turbo: false } } %>
+        </td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,30 @@
+<h1>Solution Details</h1>
+
+<p><strong>Student:</strong> <%= @solution.student.email %></p>
+<p><strong>Homework:</strong> <%= @solution.homework.title %></p>
+<p><strong>Submitted File:</strong> <%= link_to @solution.file.filename.to_s, rails_blob_path(@solution.file, disposition: "attachment") %></p>
+
+<% if current_user.teacher? %>
+  <h2>Provide Feedback</h2>
+  <%= form_with model: @solution, url: provide_feedback_group_homework_solution_path(@solution.homework.group, @solution.homework, @solution), local: true do |form| %>
+    <div class="field">
+      <%= form.label :feedback %>
+      <%= form.text_area :feedback %>
+    </div>
+    <div class="field">
+      <%= form.label :score %>
+      <%= form.number_field :score %>
+    </div>
+    <div class="actions">
+      <%= form.submit "Submit Feedback" %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @solution.feedback.present? %>
+  <h2>Feedback</h2>
+  <p><strong>Feedback:</strong> <%= @solution.feedback %></p>
+  <p><strong>Score:</strong> <%= @solution.score %></p>
+<% end %>
+
+<%= link_to 'Back to Homework', group_homework_path(@solution.homework.group, @solution.homework) %>

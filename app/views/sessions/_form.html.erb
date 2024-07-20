@@ -1,0 +1,23 @@
+<% if @session.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@session.errors.count, "error") %> prohibited this session from being saved:</h2>
+    <ul>
+      <% @session.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: [@course, @group, @session], local: true) do |form| %>
+  <%= form.label :start_time %>
+  <%= form.time_select :start_time %>
+  <%= form.label :end_time %>
+  <%= form.time_select :end_time %>
+  <% @day_names.each do |day| %>
+    <%= check_box_tag "session[recurrence_days][]", day %>
+    <%= label_tag "session_recurrence_days_#{day}", day %>
+  <% end %>
+  <%= form.submit "Save" %>
+<% end %>
+
