@@ -3,11 +3,11 @@ require 'googleauth'
 require 'googleauth/stores/file_token_store'
 require 'fileutils'
 
-OOB_URI = 'http://localhost:3000/oauth2callback'.freeze
-APPLICATION_NAME = 'Google Calendar API Ruby Quickstart'.freeze
-CREDENTIALS_PATH = 'config/credentials/google_calendar.json'.freeze
-TOKEN_PATH = 'token.yaml'.freeze
-SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
+OOB_URI = 'http://localhost:3000/oauth2callback'.freeze 
+APPLICATION_NAME = 'Google Calendar API Ruby Quickstart'.freeze 
+CREDENTIALS_PATH = 'config/credentials/google_calendar.json'.freeze 
+TOKEN_PATH = 'token.yaml'.freeze 
+SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR 
 
 # def authorize
 #   client_id = Google::Auth::ClientId.from_file(CREDENTIALS_PATH)
@@ -42,15 +42,11 @@ SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 # puts 'Upcoming events:'
 # puts 'No upcoming events found' if response.items.empty?
 # response.items.each { |event| puts "- #{event.summary} (#{event.start.date || event.start.date_time})" }
-
-
-
-
-OOB_URI = 'http://localhost:3000/oauth2callback'
-APPLICATION_NAME = 'EnlightenED'
-CREDENTIALS_PATH = 'config/credentials/google_calendar.json'.freeze
-TOKEN_PATH = 'token.yaml'
-SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
+# OOB_URI = 'http://localhost:3000/oauth2callback'
+# APPLICATION_NAME = 'EnlightenED'
+# CREDENTIALS_PATH = 'config/credentials/google_calendar.json'.freeze
+# TOKEN_PATH = 'token.yaml'
+# SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
 client_id = Google::Auth::ClientId.from_file(CREDENTIALS_PATH)
 token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
