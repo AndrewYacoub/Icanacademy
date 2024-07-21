@@ -64,18 +64,17 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
   config.action_mailer.default_url_options = { :host => 'https://icanacademy-1824c392156f.herokuapp.com' }
-  ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.perform_deliveries = true
   ActionMailer::Base.raise_delivery_errors = true
-  ActionMailer::Base.smtp_settings = 
-  {
-  
-    :address            => 'smtp.gmail.com',
-    :port               => 587,
-    :domain             => 'gmail.com', #you can also use google.com
-    :authentication     => :plain,
-    :user_name          => 'XXXXX@gmail.com',
-    :password           => 'XXXXXXX'
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    domain: 'https://icanacademy-1824c392156f.herokuapp.com',
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    authentication: :plain,
+    enable_starttls_auto: true
   }
 
   # Use a different cache store in production.
