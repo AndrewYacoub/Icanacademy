@@ -246,7 +246,7 @@ a {
 	color: #1753fc;
 	text-decoration: none;
 	background-color: transparent;
-	text-decoration-skip-objects;
+	text-decoration-skip-ink: auto;
 }
 
 a:hover {
