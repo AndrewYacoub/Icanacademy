@@ -63,7 +63,10 @@ Rails.application.configure do
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
-
+  config.action_mailer.default_url_options = { :host => 'https://icanacademy-1824c392156f.herokuapp.com' }
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
