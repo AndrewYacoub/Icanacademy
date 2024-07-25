@@ -56,16 +56,12 @@ footer {
             <div class="container-fluid">
               <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
                 <a class="header-brand" href="#">
-                  <%= image_tag("brand/logo.png", class: "header-brand-img main-logo", alt: "Hogo logo") %>
-                  <%= image_tag("brand/icon.png", class: "header-brand-img icon-logo", alt:"Hogo logo") %> 
+                <%= image_tag("brand/icanacademy.png", class: "header-brand-img main-logo", style: "width:100px") %>
                 </a>
                 <!-- logo-->
                 <% if current_user %>
                 <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-toggle="sidebar" href="#"></a>
                 <%end%>
-                <a href="#" data-toggle="search" class="nav-link nav-link navsearch">
-                  <i class="fa fa-search"></i>
-                </a>
                 <!-- search icon -->
 
                 <!-- Right-aligned horizontal navigation list -->
