@@ -19,6 +19,7 @@ gem "devise"
 gem "activeadmin"
 gem 'flatpickr'
 gem 'figaro'
+gem "mysql2"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
