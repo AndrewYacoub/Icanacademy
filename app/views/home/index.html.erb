@@ -1,3 +1,4 @@
+
 <style>
         .carousel-item img {
             height: 650px; /* Adjust this value as needed */
@@ -88,7 +89,7 @@
                 <h1 class="display-3 text-white mb-4">The Best Online Learning Platform</h1>
                 <p class="mx-auto mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no.</p>
                 <a href="#" class="btn btn-primary py-3 px-5 me-3">Read More</a>
-                <a href="#" class="btn btn-outline-light py-3 px-5">Join Now</a>
+                <a href="<%= join_now_home_index_path %>" class="btn btn-outline-light py-3 px-5">Join Now</a>
             </div>
         </div>
     </div>
@@ -99,7 +100,7 @@
                 <h1 class="display-3 text-white mb-4">The Best Online Learning Platform</h1>
                 <p class="mx-auto mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no.</p>
                 <a href="#" class="btn btn-primary py-3 px-5 me-3">Read More</a>
-                <a href="#" class="btn btn-outline-light py-3 px-5">Join Now</a>
+                <a href="<%= join_now_home_index_path %>" class="btn btn-outline-light py-3 px-5">Join Now</a>
             </div>
         </div>   
     </div>
@@ -161,7 +162,7 @@
 
 
 <!-- About Start -->
-<div class="container-xxl py-5">
+<div class="container-xxl py-5" id="about">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -169,7 +170,7 @@
                     <%= image_tag("brand/about.jpg", class: "img-fluid position-absolute w-100 h-100", alt: "About Us", style: "object-fit: cover;") %>
                 </div>
             </div>
-            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s" >
                 <h1 class="section-title text-start pe-3">من نحن؟ </h1>
                 <h1 class="mb-4">أهلا ً بكم في آي كان أكاديمي أونلاين</h1>
                 <p class="mb-4">يقدم موقع آي كان التعليمي جميع المناهج التعليمية لجميع الطلاب لجميع المراحل التعليمية بداية من الروضة </p>
@@ -298,7 +299,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-primary">Read More</a>
-                            <a href="#" class="btn btn-outline-primary">Join Now</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -326,7 +327,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-primary">Read More</a>
-                            <a href="#" class="btn btn-outline-primary">Join Now</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -354,7 +355,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-primary">Read More</a>
-                            <a href="#" class="btn btn-outline-primary">Join Now</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -383,7 +384,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-primary">Read More</a>
-                            <a href="#" class="btn btn-outline-primary">Join Now</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -412,71 +413,69 @@
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-primary">Read More</a>
-                            <a href="#" class="btn btn-outline-primary">Join Now</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-            <div class="card text-center shadow">
-                <div class="position-relative overflow-hidden">
-                <iframe width="100%" height="315" src="https://www.youtube.com/embed/rfWs6DihQ4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
-                <div class="card-body p-4">
-                        <h3 class="card-title mb-0">$149.00</h3>
-                        <div class="mb-3">
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small>(123)</small>
+                <div class="card text-center shadow">
+                    <div class="position-relative overflow-hidden">
+                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/rfWs6DihQ4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
+                    <div class="card-body p-4">
+                            <h3 class="card-title mb-0">$149.00</h3>
+                            <div class="mb-3">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small>(123)</small>
+                            </div>
+                            <h5 class="card-title">Web Design & Development Course for Beginners</h5>
+                            <div class="card-text">
+                                <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
+                                <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
+                                <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                            </div>
                         </div>
-                        <h5 class="card-title">Web Design & Development Course for Beginners</h5>
-                        <div class="card-text">
-                            <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
-                            <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
-                            <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary">Read More</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Read More</a>
-                        <a href="#" class="btn btn-outline-primary">Join Now</a>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-
-        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-            <div class="card text-center shadow">
-                <div class="position-relative overflow-hidden">
-                <iframe width="100%" height="315" src="https://www.youtube.com/embed/BVwoFajjp4E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
-                <div class="card-body p-4">
-                        <h3 class="card-title mb-0">$149.00</h3>
-                        <div class="mb-3">
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small class="fa fa-star text-primary"></small>
-                            <small>(123)</small>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="card text-center shadow">
+                    <div class="position-relative overflow-hidden">
+                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/BVwoFajjp4E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
+                    <div class="card-body p-4">
+                            <h3 class="card-title mb-0">$149.00</h3>
+                            <div class="mb-3">
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small class="fa fa-star text-primary"></small>
+                                <small>(123)</small>
+                            </div>
+                            <h5 class="card-title">Web Design & Development Course for Beginners</h5>
+                            <div class="card-text">
+                                <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
+                                <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
+                                <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                            </div>
                         </div>
-                        <h5 class="card-title">Web Design & Development Course for Beginners</h5>
-                        <div class="card-text">
-                            <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
-                            <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
-                            <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary">Read More</a>
+                            <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary">Read More</a>
-                        <a href="#" class="btn btn-outline-primary">Join Now</a>
                     </div>
                 </div>
             </div>
-        </div>
             
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
             <div class="card text-center shadow">
@@ -501,7 +500,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="#" class="btn btn-primary">Read More</a>
-                        <a href="#" class="btn btn-outline-primary">Join Now</a>
+                        <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                     </div>
                 </div>
             </div>
@@ -532,7 +531,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="#" class="btn btn-primary">Read More</a>
-                        <a href="#" class="btn btn-outline-primary">Join Now</a>
+                        <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                     </div>
                 </div>
             </div>
@@ -540,33 +539,33 @@
 
 
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-        <div class="card text-center shadow">
-            <div class="position-relative overflow-hidden">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/sQ9-cXKl4jU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
-            <div class="card-body p-4">
-                    <h3 class="card-title mb-0">$149.00</h3>
-                    <div class="mb-3">
-                        <small class="fa fa-star text-primary"></small>
-                        <small class="fa fa-star text-primary"></small>
-                        <small class="fa fa-star text-primary"></small>
-                        <small class="fa fa-star text-primary"></small>
-                        <small class="fa fa-star text-primary"></small>
-                        <small>(123)</small>
+            <div class="card text-center shadow">
+                <div class="position-relative overflow-hidden">
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/sQ9-cXKl4jU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                        
+                <div class="card-body p-4">
+                        <h3 class="card-title mb-0">$149.00</h3>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small class="fa fa-star text-primary"></small>
+                            <small>(123)</small>
+                        </div>
+                        <h5 class="card-title">Web Design & Development Course for Beginners</h5>
+                        <div class="card-text">
+                            <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
+                            <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
+                            <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                        </div>
                     </div>
-                    <h5 class="card-title">Web Design & Development Course for Beginners</h5>
-                    <div class="card-text">
-                        <small class=" mr-2"><i class="fa fa-user-secret text-primary mr-2"></i>John Doe</small>|
-                        <small class=" mr-2"><i class="fa fa-hourglass text-primary mr-2"></i>1.49 Hrs</small>|
-                        <small class=""><i class="fa fa-user text-primary mr-2"></i>30 Students</small>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">Read More</a>
+                        <a href="<%= join_now_home_index_path %>" class="btn btn-outline-primary">Join Now</a>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Read More</a>
-                    <a href="#" class="btn btn-outline-primary">Join Now</a>
                 </div>
             </div>
         </div>
-    </div>
 
         </div>
     </div>
@@ -585,7 +584,7 @@
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="card text-center shadow hover-effect">
                     <div class="overflow-hidden">
-                        <%= image_tag("brand/team-1.jpg", class: "img-fluid", alt: "") %>
+                        <%= image_tag("brand/teacher-1.jpeg", class: "img-fluid", alt: "") %>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="mb-0">Instructor Name</h5>
@@ -602,7 +601,7 @@
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="card text-center shadow hover-effect">
                     <div class="overflow-hidden">
-                        <%= image_tag("brand/team-2.jpg", class: "img-fluid", alt: "") %>
+                        <%= image_tag("brand/teacher-2.jpeg", class: "img-fluid", alt: "") %>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="mb-0">Instructor Name</h5>
@@ -619,7 +618,7 @@
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="card text-center shadow hover-effect">
                     <div class="overflow-hidden">
-                        <%= image_tag("brand/team-3.jpg", class: "img-fluid", alt: "") %>
+                        <%= image_tag("brand/teacher-3.jpeg", class: "img-fluid", alt: "") %>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="mb-0">Instructor Name</h5>
@@ -636,7 +635,7 @@
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="card text-center shadow hover-effect">
                     <div class="overflow-hidden">
-                        <%= image_tag("brand/team-4.jpg", class: "img-fluid", alt: "") %>
+                        <%= image_tag("brand/teacher-4.jpeg", class: "img-fluid", alt: "") %>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="mb-0">Instructor Name</h5>
@@ -713,12 +712,53 @@
 
 </div>
 <script>
-$(document).ready(function(){
-    var maxHeight = 0;
-    $(".owl-carousel .owl-item").each(function(){
-        if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
-    });
-    $(".owl-carousel .owl-item").height(maxHeight);
-});
 
+let players = [];
+let currentlyPlaying = null;
+
+function onYouTubeIframeAPIReady() {
+  const iframes = document.querySelectorAll('iframe');
+  iframes.forEach((iframe, index) => {
+    if (iframe.src.includes('youtube.com')) {
+      const player = new YT.Player(iframe, {
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+      players.push(player);
+    }
+  });
+}
+
+function onPlayerStateChange(event) {
+  if (event.data === YT.PlayerState.PLAYING) {
+    if (currentlyPlaying && currentlyPlaying !== event.target) {
+      currentlyPlaying.pauseVideo();
+    }
+    currentlyPlaying = event.target;
+  }
+}
+
+function handleVisibility(entries) {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      const iframe = entry.target;
+      const player = players.find(p => p.getIframe() === iframe);
+      if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      }
+    }
+  });
+}
+
+const observer = new IntersectionObserver(handleVisibility, { threshold: 0.5 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const iframes = document.querySelectorAll('iframe');
+  iframes.forEach(iframe => {
+    if (iframe.src.includes('youtube.com')) {
+      observer.observe(iframe);
+    }
+  });
+});
 </script>
