@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'homeworks/show'
   get 'homeworks/new'
   get 'homeworks/create'
+  resources :profiles, only: [:show, :edit, :update]
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users, skip: :registrations

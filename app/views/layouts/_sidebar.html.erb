@@ -4,8 +4,12 @@
       <span class="avatar avatar-xxl brround text-center cover-image" data-image-src="assets/users/female/33.png"></span>
     </div>
     <div class="user-info">
-      <a href="#" class="ml-2"><span class="text-dark app-sidebar__user-name font-weight-semibold">Jenna Side</span><br>
-        <span class="text-muted app-sidebar__user-name text-sm"> Web Designer</span>
+      <a href="<%= profile_path(current_user.id)%>" class="ml-2"><span class="text-dark app-sidebar__user-name font-weight-semibold"><%= current_user.first_name%></span><br>
+        <%if current_user.type == "Teacher"%>
+        <span class="text-muted app-sidebar__user-name text-sm"> <%= current_user.teaching%> Teacher</span>
+        <%else%>
+        <span class="text-muted app-sidebar__user-name text-sm"> <%= current_user.education_level%> Student</span>
+        <%end%>
       </a>
     </div>
   </div>
@@ -53,6 +57,12 @@
             <%= link_to teacher_pending_enrollments_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-location-outline"></i>
               <span class="side-menu__label">View Pending Enrollments</span>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to profile_path(current_user.id), class: 'side-menu__item' do %>
+              <i class="side-menu__icon typcn typcn-location-outline"></i>
+              <span class="side-menu__label">Profile Settings</span>
             <% end %>
           </li>
         </ul>

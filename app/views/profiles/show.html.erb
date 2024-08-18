@@ -1,0 +1,59 @@
+<style>
+  .profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+  }
+  .profile-header {
+    font-size: 2.5rem;
+    color: #343a40;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .profile-detail {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+  }
+  .profile-detail strong {
+    color: #343a40;
+  }
+  .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #fff;
+    margin-top: 20px;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+  }
+  .btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+  }
+</style>
+<div class="profile-container">
+  <h1 class="profile-header">Profile</h1>
+  <p class="profile-detail"><strong>Email:</strong> <%= @user.first_name %></p>
+  <p class="profile-detail"><strong>Name:</strong> <%= @user.last_name %></p>
+  <p class="profile-detail"><strong>Age:</strong> <%= @user.phone_number %></p>
+  <p class="profile-detail"><strong>Education Level:</strong> <%= @user.education_level %></p>
+  <p class="profile-detail"><strong>Country:</strong> <%= @user.country %></p>
+  <p class="profile-detail"><strong>Address:</strong> <%= @user.address %></p>
+  <% if @user.type == "Teacher"%>
+  <p class="profile-detail"><strong>Teaching:</strong> <%= @user.teaching %></p>
+  <%end%>
+  <% if @user.type == "Student"%>
+  <p class="profile-detail"><strong>Parent_phone_number:</strong> <%= @user.parent_phone_number %></p>
+  <%end%>
+
+  <%= link_to 'Edit Profile', edit_profile_path, class: 'btn btn-warning' %>
+</div>
