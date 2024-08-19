@@ -43,12 +43,14 @@
             <% end %>
           </li>
           <%end%>
+          <%if current_user.type == "Student"%>
           <li class="slide">
-            <%= link_to groups_path, class: 'side-menu__item' do %>
+            <%= link_to student_groups_enrolled_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-arrow-move-outline"></i>
-              <span class="side-menu__label">All Groups</span>
+              <span class="side-menu__label">Enrolled Groups</span>
             <% end %>
           </li>
+          <%end%>
           <%if current_user.type == "Student"%>
           <li class="slide">
             <%= link_to search_teachers_path, class: 'side-menu__item' do %>

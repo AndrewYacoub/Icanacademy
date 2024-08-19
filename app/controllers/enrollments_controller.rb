@@ -1,19 +1,19 @@
 class EnrollmentsController < ApplicationController
     before_action :set_group
-  
     def create
-      @enrollment = @group.enrollments.build(student_id: current_user.id)  # Assumes current_user is a student
+      @enrollment = @group.enrollments.build(student_id: current_user.id, status:0)  # Assumes current_user is a student
       if @enrollment.save
-        redirect_to @group, notice: 'Successfully enrolled.'
+        redirect_to root_path, notice: 'Successfully enrolled.'
       else
-        redirect_to @group, alert: 'Enrollment failed.'
+        redirect_to root_path, alert: 'Enrollment failed.'
       end
     end
+    
   
     def destroy
       @enrollment = @group.enrollments.find_by(student_id: current_user.id)
       @enrollment.destroy
-      redirect_to @group, notice: 'Enrollment was successfully cancelled.'
+      redirect_to root_path, notice: 'Enrollment was successfully cancelled.'
     end
 
     def approve_by_teacher

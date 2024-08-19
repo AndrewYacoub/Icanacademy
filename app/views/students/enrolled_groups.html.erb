@@ -86,25 +86,18 @@
 
 <div class="table-container">
   <div class="table-header">
-    Pending Enrollments
+    Enrolled Groups
   </div>
   <table>
     <thead>
       <tr>
-        <th>Student</th>
         <th>Group</th>
-        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% @pending_enrollments.each do |enrollment| %>
+      <% @groups.each do |group| %>
         <tr>
-          <td><%= enrollment.student.first_name %> <%= enrollment.student.last_name %></td>
-          <td><%= enrollment.group.name %></td>
-          <td class="d-flex">
-            <%= button_to 'Approve', approve_by_teacher_enrollment_path(enrollment, group_id: enrollment.group_id), method: :put, class: 'btn btn-approve mr-2', form: { data: { turbo: false } } %>
-            <%= button_to 'Decline', decline_by_teacher_enrollment_path(enrollment), method: :put, class: 'btn btn-decline', form: { data: { turbo: false } } %>
-          </td>
+          <td><%= link_to group.first.name, course_group_path(group.first.course_id, group) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -52,6 +52,8 @@ Rails.application.routes.draw do
   end
 
   get 'pending_enrollments', to: 'teachers#pending_enrollments', as: 'teacher_pending_enrollments'
+
+  get 'enrolled_groups', to: 'students#enrolled_groups', as: 'student_groups_enrolled'
   
   resources :courses do
     resources :groups do

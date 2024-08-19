@@ -15,6 +15,15 @@ class StudentsController < ApplicationController
     render 'rooms/index'
   end
 
+  def enrolled_groups
+    @groups = []
+    @enrollements =  current_user.enrollments.where(status: "approved_by_teacher")
+    @enrollements.each do |enrollement|
+       @groups << current_user.groups.select{|group| group.id == enrollement.group_id}
+    end
+    @groups
+  end
+
   private
 
   def get_name(user1, user2)
