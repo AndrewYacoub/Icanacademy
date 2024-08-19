@@ -7,7 +7,7 @@
       <a href="<%= profile_path(current_user.id)%>" class="ml-2"><span class="text-dark app-sidebar__user-name font-weight-semibold"><%= current_user.first_name%></span><br>
         <%if current_user.type == "Teacher"%>
         <span class="text-muted app-sidebar__user-name text-sm"> <%= current_user.teaching%> Teacher</span>
-        <%else%>
+        <%elsif current_user.type == "Student" %>
         <span class="text-muted app-sidebar__user-name text-sm"> <%= current_user.education_level%> Student</span>
         <%end%>
       </a>
@@ -35,30 +35,36 @@
               <span class="side-menu__label">Dashboard</span>
             <% end %>
           </li>
+          <%if current_user.type == "Teacher"%>
           <li class="slide">
             <%= link_to courses_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-th-large-outline"></i>
               <span class="side-menu__label">My Courses</span>
             <% end %>
           </li>
+          <%end%>
           <li class="slide">
             <%= link_to groups_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-arrow-move-outline"></i>
               <span class="side-menu__label">All Groups</span>
             <% end %>
           </li>
+          <%if current_user.type == "Student"%>
           <li class="slide">
             <%= link_to search_teachers_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-location-outline"></i>
               <span class="side-menu__label">Search Teachers</span>
             <% end %>
           </li>
+          <%end%>
+          <%if current_user.type == "Teacher"%>
           <li class="slide">
             <%= link_to teacher_pending_enrollments_path, class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-location-outline"></i>
               <span class="side-menu__label">View Pending Enrollments</span>
             <% end %>
           </li>
+          <%end%>
           <li>
             <%= link_to profile_path(current_user.id), class: 'side-menu__item' do %>
               <i class="side-menu__icon typcn typcn-location-outline"></i>
