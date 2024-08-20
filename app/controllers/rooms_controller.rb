@@ -41,7 +41,8 @@ class RoomsController < ApplicationController
   end
 
   def load_users_and_rooms
-    @users = User.where.not(id: current_user&.id)
-    @rooms = Room.public_rooms
+    @users = @group.enrollments.where(status: 'approved_by_teacher').map(&:student)
+    @rooms = Room.where(group_id: @group.id)
   end
+  
 end
