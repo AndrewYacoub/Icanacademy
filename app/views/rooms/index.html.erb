@@ -79,15 +79,16 @@
           </div>
           <% if @group %>
             <h2 class="card-subtitle text-dark mb-3">Rooms</h2>
-            <% unless @rooms%>
+            <% unless @rooms %>
             <%= render partial: "layouts/new_room_form" %>
-            <%end%>
+            <%else%>
             <%= turbo_stream_from "rooms" %>
             <div id="rooms">
               <ul class="list-group list-group-flush">
                 <%= render @rooms.first %>
               </ul>
             </div>
+            <%end%>
           <% end %>
         </ul>
       </div>
