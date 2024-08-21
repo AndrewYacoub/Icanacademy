@@ -79,7 +79,7 @@
           </div>
           <% if @group %>
             <h2 class="card-subtitle text-dark mb-3">Rooms</h2>
-            <% unless @rooms %>
+            <% unless @rooms.exists? %>
             <%= render partial: "layouts/new_room_form" %>
             <%else%>
             <%= turbo_stream_from "rooms" %>
@@ -120,7 +120,9 @@
       
       <!-- Chat Footer -->
       <div class="card-footer">
+        <% if @rooms.exists? %>
         <%= render partial: 'layouts/new_message_form' %>
+        <%end%>
       </div>
     </div>
   </div>
