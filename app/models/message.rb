@@ -5,6 +5,7 @@ class Message < ApplicationRecord
   has_one_attached :image
   after_create_commit { broadcast_append_to room }
   before_create :confirm_participant
+  has_one_attached :audio
 
   def confirm_participant
     if room.is_private

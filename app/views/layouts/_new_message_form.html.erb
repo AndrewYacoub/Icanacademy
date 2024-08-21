@@ -1,16 +1,70 @@
-<div class="msb-reply d-flex">
-  <div class="input-group">
-    <%= form_with(model: [@single_room ,@message], remote: true, class: "d-flex align-items-center w-100", 
-       data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
-      <%= f.text_field :content, id: 'chat-text', class: "form-control bg-white", placeholder: "Typing...", autocomplete: 'off' %>
-      <div class="input-group-prepend">
-        <label for="file-upload" class="input-group-text bg-white border-0">
-          <i class="fa fa-paperclip" aria-hidden="true"></i>
-        </label>
-        <%= f.file_field :file, id: "file-upload", class: "d-none" %>
-      </div>
-        <%= f.submit "Send", class: "btn btn-primary", data: { disable_with: false } %>
-      </div>
-    <% end %>
-  </div>
+<div class="msb-reply d-flex align-items-center">
+  <%= form_with(model: [@single_room, @message], remote: true, class: "d-flex align-items-center w-100", 
+     data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
+
+    <!-- Reduced width for the text field -->
+    <%= f.text_field :content, id: 'chat-text', class: "form-control bg-white", placeholder: "Typing...", autocomplete: 'off', style: "width: 70%;" %>
+    
+    <!-- Voice Recording Button without background -->
+    <button type="button" id="record-button" class="btn btn-secondary ml-2 d-flex justify-content-center align-items-center" 
+            style="width: 40px; height: 40px; border-radius: 50%; padding: 0;">
+      <i class="fa fa-microphone"></i>
+    </button>
+    
+    <!-- Hidden Input to Store Audio Blob -->
+    <%= f.hidden_field :audio, id: "audio-data", value: "" %>
+    
+    <!-- File Upload Icon without background -->
+    <div class="input-group-prepend">
+      <label for="file-upload" class="input-group-text bg-transparent border-0 p-0 ml-2">
+        <i class="fa fa-paperclip"></i>
+      </label>
+      <%= f.file_field :file, id: "file-upload", class: "d-none" %>
+    </div>
+    
+    <!-- Send Button -->
+    <%= f.submit "Send", class: "btn btn-primary ml-2", data: { disable_with: false } %>
+    
+  <% end %>
 </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  let recordButton = document.getElementById("record-button");
+  let audioInput = document.getElementById("audio-data");
+  let mediaRecorder;
+  let audioChunks = [];
+
+  if (recordButton) {
+    recordButton.addEventListener("click", async function() {
+      if (!mediaRecorder || mediaRecorder.state === "inactive") {
+        audioChunks = [];
+        let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        
+        mediaRecorder.start();
+
+        mediaRecorder.addEventListener("dataavailable", function(event) {
+          audioChunks.push(event.data);
+        });
+
+        mediaRecorder.addEventListener("stop", function() {
+          let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+          let audioUrl = URL.createObjectURL(audioBlob);
+          let reader = new FileReader();
+          reader.readAsDataURL(audioBlob);
+          reader.onloadend = function() {
+            audioInput.value = reader.result; // Store the audio data in the hidden input field
+          };
+        });
+
+        recordButton.innerHTML = '<i class="fa fa-stop"></i>';
+      } else {
+        mediaRecorder.stop();
+        recordButton.innerHTML = '<i class="fa fa-microphone"></i>';
+      }
+    });
+  }
+});
+  </script>

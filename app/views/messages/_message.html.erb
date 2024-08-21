@@ -5,14 +5,30 @@
         <h6 class="name mb-0 color-white"><strong><%= message.user.type %>: <%= message.user.first_name %></strong></h6>
       <% end %>
     </div>
+    
+    <!-- Message Content -->
     <p class="mb-0"><%= message.content %></p>
+
+    <!-- Attached File Link -->
     <% if message.file.attached? %>
-      <a href="<%= url_for(message.file) %>" download class="btn btn-success btn-sm">
-        <%=message.file.filename%>
+      <a href="<%= url_for(message.file) %>" download class="btn btn-success btn-sm mt-2">
+        <%= message.file.filename %>
       </a>
     <% end %>
+
+    <!-- Audio Element -->
+    <% if message.audio.attached? %>
+      <div class="audio-container mt-3">
+        <audio controls class="w-100">
+          <source src="<%= url_for(message.audio) %>" type="audio/wav">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    <% end %>
+    
   </div>
 </div>
+
 
 
 
