@@ -112,7 +112,9 @@
       <div class="card-body msg_card_body">
         <%= turbo_stream_from @single_room %>
         <div id="messages" class="mb-4" data-controller="scroll">
+          <% if @messages %>
           <%= render @messages %>
+          <%end%>
         </div>
       </div>
       
