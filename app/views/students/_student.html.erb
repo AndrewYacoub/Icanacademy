@@ -1,8 +1,13 @@
-<% if @single_room && @single_room.participant?(@single_room, student) %>
-  <% isActive =  'active' %>
-<% else %>
-  <% isActive = '' %>
-<% end %>
+<% isActive = (@single_room && @single_room.participant?(@single_room, student)) ? 'active' : '' %>
 <li class="list-group-item d-flex align-items-center user_list_item <%= isActive %>">
-  <%= link_to student.email, student, class:'mr-auto username' %>
+  <div class="img_cont">
+  <%= image_tag("brand/icanacademy.png", class: "rounded-circle user_img_msg") %>
+    <% if student.active? %>
+      <span class="online_icon"></span>
+    <% end %>
+  </div>
+  <div class="user_info">
+    <%= link_to "#{student.first_name} #{student.last_name}", student, class: 'mr-auto username' %>
+    <small class="text-muted"><%= student.active? ? 'Online' : 'Offline' %></small>
+  </div>
 </li>

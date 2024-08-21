@@ -1,6 +1,8 @@
 class Message < ApplicationRecord
   belongs_to :user
   belongs_to :room
+  has_one_attached :file
+  has_one_attached :image
   after_create_commit { broadcast_append_to room }
   before_create :confirm_participant
 

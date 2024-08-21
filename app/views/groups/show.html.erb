@@ -63,7 +63,6 @@
 
 
 <h1 class="display-4 mb-4">Group Details</h1>
-<% unless current_user.type == "Student" %>
 <div class="d-flex justify-content-end mb-3">
   <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary ml-2' %>
   <%= link_to 'Create Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
@@ -71,7 +70,6 @@
   <%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary ml-2' %>
   <%= link_to 'Chat Room', course_group_room_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
 </div>
-<%end%>
 
 <div class="card mb-4">
   <div class="card-body">

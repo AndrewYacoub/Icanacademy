@@ -109,6 +109,10 @@
       <%= form.text_field :parent_phone_number, class: 'form-control' %>
     </div>
     <%end%>
+      <div class="form-group">
+        <%= form.label :profile_picture_url, "Update Profile Picture" %>
+        <%= form.file_field :profile_picture_url, class: "form-control" %>
+     </div>
     <div class="actions">
       <%= form.submit 'Update Profile', class: 'btn btn-warning' %>
     </div>

@@ -1,5 +1,5 @@
-<%= form_with(model: [@course,@group, @room], remote: true, class: "d-flex",
+<%= form_with(model: [@course, @group, @room], remote: true, class: "d-flex", 
               data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
-  <%= f.text_field :name, class: "form-control", autocomplete: 'off' %>
-  <%= f.submit data: { disable_with: false } %>
+  <%= f.text_field :name, class: "form-control", placeholder: "New Room Name", autocomplete: 'off' %>
+  <%= f.submit "Create", class: "btn btn-primary ml-2", data: { disable_with: false } %>
 <% end %>

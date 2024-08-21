@@ -1,7 +1,16 @@
-<div class="form-group msg-form">
-  <%= form_with(model: [@single_room ,@message], remote: true, class: "d-flex",
-     data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
-    <%= f.text_field :content, id: 'chat-text', class: "form-control msg-content", autocomplete: 'off' %>
-    <%= f.submit data: { disable_with: false }, class: "btn btn-primary" %>
-  <% end %>
+<div class="msb-reply d-flex">
+  <div class="input-group">
+    <%= form_with(model: [@single_room ,@message], remote: true, class: "d-flex align-items-center w-100", 
+       data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
+      <%= f.text_field :content, id: 'chat-text', class: "form-control bg-white", placeholder: "Typing...", autocomplete: 'off' %>
+      <div class="input-group-prepend">
+        <label for="file-upload" class="input-group-text bg-white border-0">
+          <i class="fa fa-paperclip" aria-hidden="true"></i>
+        </label>
+        <%= f.file_field :file, id: "file-upload", class: "d-none" %>
+      </div>
+        <%= f.submit "Send", class: "btn btn-primary", data: { disable_with: false } %>
+      </div>
+    <% end %>
+  </div>
 </div>

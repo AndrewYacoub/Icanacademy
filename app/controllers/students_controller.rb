@@ -28,6 +28,6 @@ class StudentsController < ApplicationController
 
   def get_name(user1, user2)
     users = [user1, user2].pluck(:id).sort
-    "private_#{User.find(users[0]).email}_#{User.find(users[1]).email}"
+    "private_#{User.find(users[0]).first_name}_#{User.find(users[1]).first_name}"
   end
 end
