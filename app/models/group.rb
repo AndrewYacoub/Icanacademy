@@ -11,17 +11,16 @@ class Group < ApplicationRecord
 
 
   # Session times are now attributes of Group
-  validates :start_time, :end_time, presence: true
+  serialize :start_times, JSON
+  serialize :end_times, JSON
   serialize :recurrence_days, JSON
   has_many :session_modifications, dependent: :destroy
 
   # You might still need to calculate occurrences based on recurrence_days,
   # but no need to create separate session records.
-  def calculate_session_occurrences
+  def calculate_session_occurrences(day)
     schedule = IceCube::Schedule.new(self.start_date)
-    recurrence_days.each do |day|
-      schedule.add_recurrence_rule IceCube::Rule.weekly.day(day.downcase.to_sym).until(self.end_date)
-    end
+    schedule.add_recurrence_rule IceCube::Rule.weekly.day(day.downcase.to_sym).until(self.end_date)
     schedule.all_occurrences
   end
 end

@@ -45,11 +45,11 @@ module GoogleCalendarHelper
       summary: "Group Session: #{group.name}",
       start: Google::Apis::CalendarV3::EventDateTime.new(
         date_time: session.start_time.to_datetime.rfc3339,
-        time_zone: 'UTC'
+        time_zone: 'Africa/Cairo'
       ),
       end: Google::Apis::CalendarV3::EventDateTime.new(
         date_time: session.end_time.to_datetime.rfc3339,
-        time_zone: 'UTC'
+        time_zone: 'Africa/Cairo'
       ),
       conference_data: Google::Apis::CalendarV3::ConferenceData.new(
         create_request: Google::Apis::CalendarV3::CreateConferenceRequest.new(

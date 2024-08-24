@@ -86,19 +86,45 @@ class GroupsController < ApplicationController
     end
 
     def group_params
-      permitted_params = params.require(:group).permit(:name, :start_date, :end_date, :start_time, :end_time, recurrence_days: [])
-      permitted_params[:recurrence_days] = permitted_params[:recurrence_days].reject(&:blank?)  # Removes any blank values from the array
-      permitted_params
+      params.require(:group).permit(
+        :name, 
+        :start_date, 
+        :end_date, 
+        recurrence_days: [], 
+        start_times: {}, 
+        end_times: {}
+      )
     end
 
+    # def create_sessions_for_group(group)
+    #   group.calculate_session_occurrences.each do |occurrence|
+    #     session = group.sessions.create!(
+    #       start_time: occurrence,
+    #       end_time: occurrence + (group.end_time - group.start_time)
+    #     )
+    #     session.update!(google_meet_link: group.create_google_meet_link(group, session))
+    #   end
+    # end
+
     def create_sessions_for_group(group)
-      group.calculate_session_occurrences.each do |occurrence|
-        session = group.sessions.create!(
-          start_time: occurrence,
-          end_time: occurrence + (group.end_time - group.start_time)
-        )
-        session.update!(google_meet_link: group.create_google_meet_link(group, session))
+      group.recurrence_days.each_with_index do |day, index|
+        start_time = group.start_times[day]
+        end_time = group.end_times[day]
+    
+        # Parse start_time and end_time as needed, e.g., Time.zone.parse(start_time)
+        session_start_time = Time.zone.parse(start_time)
+        session_end_time = Time.zone.parse(end_time)
+    
+        # Calculate occurrences and create sessions
+        group.calculate_session_occurrences(day).each do |occurrence|
+          session = group.sessions.create!(
+            start_time: occurrence.change(hour: session_start_time.hour, min: session_start_time.min),
+            end_time: occurrence.change(hour: session_end_time.hour, min: session_end_time.min)
+          )
+          session.update!(google_meet_link: group.create_google_meet_link(group, session))
+        end
       end
     end
+
   end
   

@@ -60,8 +60,6 @@
   }
 </style>
 
-
-
 <h1 class="display-4 mb-4">Group Details</h1>
 <div class="d-flex justify-content-end mb-3">
   <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary ml-2' %>
@@ -84,16 +82,23 @@
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title">Session Details</h5>
-    <p class="card-text">Start Time: <%= @group.start_time&.strftime("%I:%M %p") || "Not set" %></p>
-    <p class="card-text">End Time: <%= @group.end_time&.strftime("%I:%M %p") || "Not set" %></p>
-    <p class="card-text">Recurrence Days: <%= @group.recurrence_days.present? ? @group.recurrence_days.join(', ') : "Not set" %></p>
+    <% if @group.recurrence_days.present? %>
+      <% @group.recurrence_days.each_with_index do |day, index| %>
+        <p class="card-text"><strong><%= day %>:</strong></p>
+        <p class="card-text">Start Time: <%= @group.start_times[index]&.strftime("%I:%M %p") || "Not set" %></p>
+        <p class="card-text">End Time: <%= @group.end_times[index]&.strftime("%I:%M %p") || "Not set" %></p>
+      <% end %>
+    <% else %>
+      <p class="card-text">No recurrence days set</p>
+    <% end %>
   </div>
 </div>
+
 <% unless current_user.type == "Teacher" %>
   <div class="card mb-4">
     <div class="card-body">
       <h5 class="card-title">Enrollments</h5>
-    <%= button_to 'Enroll', group_enrollments_path(@group), method: :post, class: 'btn btn-success mb-3' %>
+      <%= button_to 'Enroll', group_enrollments_path(@group), method: :post, class: 'btn btn-success mb-3' %>
 
       <ul class="list-group">
         <% @group.enrollments.each do |enrollment| %>
@@ -105,7 +110,8 @@
       </ul>
     </div>
   </div>
-<%end%>
+<% end %>
+
 <h1 class="sessions-header"><%= @group.name %> Sessions</h1>
 
 <table class="sessions-table table table-hover">
@@ -118,9 +124,9 @@
     </tr>
   </thead>
   <tbody>
-    <% @group.sessions.each do |session| %>
+    <% @group.sessions.sort_by(&:start_time).each do |session| %>
       <tr>
-        <td><%= session.start_time.strftime("%B %d, %Y") %></td>
+        <td><%= session.start_time.strftime("%A, %B %d, %Y") %></td>
         <td><%= session.start_time.strftime("%I:%M %p") %></td>
         <td><%= session.end_time.strftime("%I:%M %p") %></td>
         <td><%= link_to 'Join Meeting', session.google_meet_link, class: 'join-meeting-link' %></td>
@@ -128,53 +134,52 @@
     <% end %>
   </tbody>
 </table>
+
 <% unless current_user.type == "Student" %>
-
-<div class="card mb-4">
-  <div class="card-body">
-    <h5 class="card-title">Add New Session Modification</h5>
-    <%= form_with(model: [ @course, @group, @group.session_modifications.build ], local: true, html: { class: 'form-horizontal' }) do |form| %>
-      <div class="form-group">
-        <%= form.label :date, "Date of Modification", class: 'control-label' %>
-        <%= form.date_field :date, class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <%= form.label :start_time, "Start Time", class: 'control-label' %>
-        <%= form.time_select :start_time, {}, class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <%= form.label :end_time, "End Time", class: 'control-label' %>
-        <%= form.time_select :end_time, {}, class: 'form-control' %>
-      </div>
-      <div class="form-group">
-        <%= form.submit "Create Modification", class: 'btn btn-primary' %>
-      </div>
-    <% end %>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Add New Session Modification</h5>
+      <%= form_with(model: [ @course, @group, @group.session_modifications.build ], local: true, html: { class: 'form-horizontal' }) do |form| %>
+        <div class="form-group">
+          <%= form.label :date, "Date of Modification", class: 'control-label' %>
+          <%= form.date_field :date, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= form.label :start_time, "Start Time", class: 'control-label' %>
+          <%= form.time_select :start_time, {}, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= form.label :end_time, "End Time", class: 'control-label' %>
+          <%= form.time_select :end_time, {}, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= form.submit "Create Modification", class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<h3 class="mt-4">List of Session Modifications</h3>
-<div class="card mb-4">
-  <div class="card-body">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @group.session_modifications.each do |modification| %>
+  <h3 class="mt-4">List of Session Modifications</h3>
+  <div class="card mb-4">
+    <div class="card-body">
+      <table class="table table-bordered table-hover">
+        <thead>
           <tr>
-            <td><%= modification.date %></td>
-            <td><%= modification.start_time ? modification.start_time.strftime("%I:%M %p") : "Not set" %></td>
-            <td><%= modification.end_time ? modification.end_time.strftime("%I:%M %p") : "Not set" %></td>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @group.session_modifications.each do |modification| %>
+            <tr>
+              <td><%= modification.date %></td>
+              <td><%= modification.start_time ? modification.start_time.strftime("%I:%M %p") : "Not set" %></td>
+              <td><%= modification.end_time ? modification.end_time.strftime("%I:%M %p") : "Not set" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-
-<%end%>
+<% end %>
