@@ -22,5 +22,5 @@ class Group < ApplicationRecord
     schedule = IceCube::Schedule.new(self.start_date)
     schedule.add_recurrence_rule IceCube::Rule.weekly.day(day.downcase.to_sym).until(self.end_date)
     schedule.all_occurrences
-  end
+  end  
 end

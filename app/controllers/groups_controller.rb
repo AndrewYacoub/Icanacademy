@@ -107,24 +107,28 @@ class GroupsController < ApplicationController
     # end
 
     def create_sessions_for_group(group)
-      group.recurrence_days.each_with_index do |day, index|
-        start_time = group.start_times[day]
-        end_time = group.end_times[day]
+      group.recurrence_days.each do |day|
+        occurrences = group.calculate_session_occurrences(day)
     
-        # Parse start_time and end_time as needed, e.g., Time.zone.parse(start_time)
-        session_start_time = Time.zone.parse(start_time)
-        session_end_time = Time.zone.parse(end_time)
+        occurrences.each do |occurrence|
+          # Find the corresponding start and end times for this day
+          start_time_str = group.start_times[day]
+          end_time_str = group.end_times[day]
     
-        # Calculate occurrences and create sessions
-        group.calculate_session_occurrences(day).each do |occurrence|
-          session = group.sessions.create!(
-            start_time: occurrence.change(hour: session_start_time.hour, min: session_start_time.min),
-            end_time: occurrence.change(hour: session_end_time.hour, min: session_end_time.min)
-          )
-          session.update!(google_meet_link: group.create_google_meet_link(group, session))
+          # Parse the start and end times to create a DateTime object
+          start_time = DateTime.parse("#{occurrence.to_date} #{start_time_str}") if start_time_str.present?
+          end_time = DateTime.parse("#{occurrence.to_date} #{end_time_str}") if end_time_str.present?
+    
+          if start_time && end_time
+            session = group.sessions.create!(
+              start_time: start_time,
+              end_time: end_time
+            )
+            session.update!(google_meet_link: group.create_google_meet_link(group, session))
+          end
         end
       end
-    end
+    end    
 
   end
   
