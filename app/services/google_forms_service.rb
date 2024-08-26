@@ -1,3 +1,4 @@
+# app/services/google_forms_service.rb
 class GoogleFormsService
   FORMS = Google::Apis::FormsV1
 
@@ -36,6 +37,8 @@ class GoogleFormsService
   end
 
   def add_questions_to_form(form_id, questions)
+    drive_service = DriveService.new
+
     requests = questions.map do |question|
       choices = question['choices'].split(',').map(&:strip)
       correct_answer = question['correct_answer'].strip
@@ -44,6 +47,12 @@ class GoogleFormsService
         Rails.logger.debug "Correct answer '#{correct_answer}' is not among the provided choices for question '#{question['text']}'. Choices: #{choices.inspect}"
         raise "Correct answer '#{correct_answer}' is not among the provided choices for question '#{question['text']}'"
       end
+
+      # Upload image to Google Drive if image path is present
+      image_url = if question['image'].present?
+                    file_id = drive_service.upload_image(question['image'].tempfile.path)
+                    "https://drive.google.com/uc?id=#{file_id}"
+                  end
 
       {
         create_item: {
@@ -63,12 +72,15 @@ class GoogleFormsService
                 choice_question: {
                   type: map_question_type(question['type']),
                   options: choices.map { |choice| { value: choice } }
+                },
+                image: {
+                  sourceUri: image_url
                 }
               }
             }
-          },
-          location: {
-            index: 0
+          }, 
+          location: { 
+            index: 0 
           }
         }
       }

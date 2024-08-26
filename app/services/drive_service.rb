@@ -1,7 +1,5 @@
-# app/services/drive_service.rb
 require 'google/apis/drive_v3'
 require 'googleauth'
-
 class DriveService
   DRIVE = Google::Apis::DriveV3
 
@@ -12,6 +10,18 @@ class DriveService
 
   def create_permission(file_id, permission)
     @service.create_permission(file_id, permission, fields: 'id')
+  end
+
+  def upload_image(file_path)
+    file_metadata = {
+      name: File.basename(file_path)
+    }
+    file = @service.create_file(file_metadata, upload_source: file_path, content_type: 'image/jpeg')
+    
+    # Make the file publicly accessible
+    create_permission(file.id, { role: 'reader', type: 'anyone' })
+    
+    file.id
   end
 
   private

@@ -17,20 +17,32 @@ class HomeworksController < ApplicationController
 
   def create
     @homework = @group.homeworks.new(homework_params)
-    questions = params[:questions].values.map(&:to_unsafe_h)
-
+    questions = params[:questions].values.map do |question_params|
+      question = question_params.to_unsafe_h
+      if question['image'].present?
+        uploaded_file = question['image']
+        file_path = Rails.root.join('tmp', uploaded_file.original_filename)
+        File.open(file_path, 'wb') do |file|
+          file.write(uploaded_file.read)
+        end
+        question['image_path'] = file_path.to_s
+      end
+      question
+    end
+  
     google_form_service = GoogleFormsService.new
     google_form = google_form_service.create_form(@homework.title, questions)
-
+  
     @homework.google_form_id = google_form.form_id
     @homework.google_form_link = google_form.responder_uri
-
+  
     if @homework.save
       redirect_to course_group_homework_path(@course, @group, @homework), notice: 'Homework was successfully created.'
     else
       render :new
     end
   end
+  
 
   def edit
     # Your edit logic here
