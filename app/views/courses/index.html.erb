@@ -1,49 +1,106 @@
 <style>
-.table-wrapper {
-  margin: 20px auto;
-  max-width: 80%;
-}
-.table thead th {
-  text-transform: uppercase;
-  font-size: 0.85rem;
-}
-.table tbody td {
-  vertical-align: middle;
-}
-.actions a {
-  margin-right: 10px;
-}
-.actions a:last-child {
-  margin-right: 0;
-}
+  .table-wrapper {
+    margin: 20px auto;
+    max-width: 80%;
+  }
+
+  .table thead th {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+  }
+
+  .actions a {
+    margin-right: 10px;
+  }
+
+  .actions a:last-child {
+    margin-right: 0;
+  }
+
+  /* Mobile styling */
+  @media (max-width: 768px) {
+    .table-wrapper {
+      max-width: 95%; /* Increase width to better utilize screen space */
+    }
+
+    .table {
+      width: 100%;
+      display: block; /* Make table block for better mobile behavior */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+    }
+
+    .table thead {
+      display: none; /* Hide table header */
+    }
+
+    .table tbody, .table tr, .table td {
+      display: block; /* Stack rows vertically */
+      width: 100%; /* Ensure full width */
+    }
+
+    .table tbody td {
+      text-align: right; /* Align text to the right */
+      padding-left: 50%; /* Create space for pseudo-element */
+      position: relative; /* Relative position for pseudo-element */
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .table tbody td::before {
+      content: attr(data-label); /* Use data-label attribute for pseudo-element */
+      position: absolute; /* Absolute position for left-side label */
+      left: 15px; /* Spacing from left */
+      width: calc(50% - 30px); /* Adjust width */
+      text-align: left; /* Align text to left */
+      font-weight: bold;
+      text-transform: uppercase; /* Uppercase text */
+    }
+
+    .table tbody td a.btn {
+      width: 100%; /* Full-width buttons */
+      margin-bottom: 5px; /* Space between buttons */
+    }
+
+    .text-center .btn {
+      width: 100%; /* Full-width button for 'New Course' */
+      font-size: 1rem; /* Smaller font size for button */
+      margin-top: 15px; /* Margin for spacing */
+    }
+  }
 </style>
 
+
 <div class="container">
-<div class="table-wrapper">
-  <h1 class="my-4 text-center">My Courses</h1>
-  <table class="table table-bordered table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @courses.each do |course| %>
+  <div class="table-wrapper">
+    <h1 class="my-4 text-center">My Courses</h1>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
         <tr>
-          <td><%= link_to course.title, course, class: 'text-decoration-none text-dark' %></td>
-          <td><%= course.description %></td>
-          <td class="actions">
-            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-sm btn-warning' %>
-            <%= link_to 'Delete', course, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-          </td>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <div class="text-center">
-    <%= link_to 'New Course', new_course_path, class: 'btn btn-primary btn-lg mt-3' %>
+      </thead>
+      <tbody>
+        <% @courses.each do |course| %>
+          <tr>
+            <td data-label="Title"><%= link_to course.title, course, class: 'text-decoration-none text-dark' %></td>
+            <td data-label="Description"><%= course.description %></td>
+            <td data-label="Actions" class="actions">
+              <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-sm btn-warning' %>
+              <%= link_to 'Delete', course, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <%= link_to 'New Course', new_course_path, class: 'btn btn-primary btn-lg mt-3' %>
+    </div>
   </div>
-</div>
 </div>

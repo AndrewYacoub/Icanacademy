@@ -1,3 +1,70 @@
+<style>
+  .form-horizontal .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-horizontal .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .form-horizontal .btn {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Mobile styling */
+  @media (max-width: 768px) {
+    .form-horizontal .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-left: 15px; /* Add margin for spacing */
+      margin-right: 15px; /* Add margin for spacing */
+    }
+
+    .form-horizontal .col-form-label {
+      text-align: left;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-horizontal .col-sm-9,
+    .form-horizontal .col-sm-3 {
+      width: 100%;
+      padding: 0;
+    }
+
+    .form-horizontal .form-control {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .form-horizontal .btn {
+      width: 100%;
+      background-color: #007bff;
+      color: #fff;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-horizontal .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .alert.alert-danger {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      margin-left: 15px; /* Add margin for spacing */
+      margin-right: 15px; /* Add margin for spacing */
+    }
+  }
+</style>
+
 <%= form_with(model: @course, local: true, html: { class: 'form-horizontal' }) do |form| %>
   <% if @course.errors.any? %>
     <div class="alert alert-danger" role="alert">
@@ -11,19 +78,18 @@
   <% end %>
 
   <div class="form-group row">
-    <%= form.label :title, class: 'col-sm-3 col-form-label' %>
+    <%= form.label :title, class: 'col-form-label d-none d-sm-block col-sm-3' %>
     <div class="col-sm-9">
-      <%= form.text_field :title, class: 'form-control' %>
+      <%= form.text_field :title, placeholder: 'Enter Title', class: 'form-control' %>
     </div>
   </div>
 
   <div class="form-group row">
-    <%= form.label :description, class: 'col-sm-3 col-form-label' %>
+    <%= form.label :description, class: 'col-form-label d-none d-sm-block col-sm-3' %>
     <div class="col-sm-9">
-      <%= form.text_area :description, class: 'form-control', rows: 5 %>
+      <%= form.text_area :description, placeholder: 'Enter Description', class: 'form-control', rows: 5 %>
     </div>
   </div>
-
 
   <div class="form-group row">
     <div class="col-sm-9 offset-sm-3">

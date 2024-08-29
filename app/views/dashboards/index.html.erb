@@ -1,18 +1,147 @@
+<style>
+  /* Custom styles for the calendar container */
+  #calendar {
+    max-width: 90%; /* Set maximum width */
+    margin: 20px auto; /* Center the calendar with auto margins */
+    border-radius: 8px; /* Round the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: #ffffff; /* Set background color to white */
+    border: 1px solid #e0e0e0; /* Light gray border */
+  }
+
+  /* Custom styles for the list view */
+  .fc-list {
+    border-radius: 8px; /* Round the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    background-color: #ffffff; /* Set background color to white */
+    border: 1px solid #e0e0e0; /* Light gray border */
+  }
+
+  /* Custom styles for list items */
+  .fc-list-item {
+    border-bottom: 1px solid #e0e0e0; /* Light gray border between items */
+  }
+
+  .fc-list-item:hover {
+    background-color: #f9f9f9; /* Light background color on hover */
+  }
+
+  .fc-list-item-time {
+    font-weight: bold; /* Make the time bold */
+  }
+
+  .fc-list-item-title {
+    color: #007bff; /* Blue color for event titles */
+    font-weight: bold; /* Make the titles bold */
+  }
+
+  /* Custom styles for the header toolbar */
+  .fc-header-toolbar {
+    display: flex; /* Use flexbox layout */
+    justify-content: space-between; /* Space out toolbar items */
+    align-items: center; /* Center align toolbar items vertically */
+    padding: 10px; /* Add padding around toolbar */
+    background-color: #007bff; /* Set background color to blue */
+    color: white; /* Set text color to white */
+    border-radius: 8px 8px 0 0; /* Round top corners */
+  }
+
+  /* Custom styles for buttons in the header toolbar */
+  .fc-header-toolbar .fc-button {
+    background-color: white; /* Set background color to white */
+    color: #007bff; /* Set text color to blue */
+    border: none; /* Remove border */
+    padding: 5px 10px; /* Add padding */
+    border-radius: 4px; /* Round corners */
+    margin: 0 5px; /* Add margin between buttons */
+  }
+
+  .fc-header-toolbar .fc-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: white; /* White text on hover */
+  }
+
+  .fc-header-toolbar .fc-button-primary {
+    background-color: #0056b3; /* Set background color for primary button */
+    border: none; /* Remove border */
+    color: white; /* Set text color to white */
+  }
+
+  /* Responsive adjustments for mobile screens */
+  @media (max-width: 800px) {
+    #calendar {
+      max-width: 100%; /* Use full width */
+      margin: 10px; /* Reduce margin */
+    }
+
+    .fc-header-toolbar {
+      flex-direction: column; /* Stack toolbar items vertically */
+      align-items: center; /* Center align toolbar items */
+    }
+
+    .fc-header-toolbar .fc-toolbar-chunk {
+      margin-bottom: 5px; /* Add margin below toolbar chunks */
+    }
+
+    .fc-header-toolbar h2 {
+      font-size: 1.2rem; /* Smaller font size for mobile */
+    }
+
+    .fc-header-toolbar .fc-button {
+      font-size: 0.8rem; /* Smaller font size for buttons */
+      margin: 2px; /* Reduce margin between buttons */
+    }
+
+    .fc-list-item {
+      padding: 10px; /* Add padding to list items */
+    }
+
+    .fc-list-item-title {
+      font-size: 1rem; /* Increase font size for event titles */
+    }
+  }
+</style>
+
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
 <script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-        let calendarEl = document.getElementById('calendar');
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events: '/dashboards/sessions.json',
-            eventClick: function(info) {
-                window.open(info.event.url, '_blank');
-            }
-        });
-
-        calendar.render();
+  document.addEventListener('DOMContentLoaded', function() {
+    let calendarEl = document.getElementById('calendar');
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth', // Default view for larger screens
+      events: '/dashboards/sessions.json', // URL to fetch events
+      eventClick: function(info) {
+        window.open(info.event.url, '_blank'); // Open event link in new tab
+      },
+      headerToolbar: {
+        left: 'prev,next today', // Left side of the header toolbar
+        center: 'title', // Center of the header toolbar
+        right: 'dayGridMonth,timeGridWeek,timeGridDay' // Right side of the header toolbar
+      },
+      views: {
+        dayGridMonth: { // Default view settings for dayGridMonth
+          buttonText: 'Month' // Button text for dayGridMonth view
+        },
+        listMonth: { // Settings for the list view on mobile
+          buttonText: 'List' // Button text for listMonth view
+        }
+      },
+      windowResize: function(view) { // Function to handle window resizing
+        if (window.innerWidth < 768) { // Check if screen width is less than 768px
+          calendar.changeView('listMonth'); // Change to list view for mobile
+        } else {
+          calendar.changeView('dayGridMonth'); // Change to dayGridMonth view for larger screens
+        }
+      },
+      // Additional responsive settings if needed
+      editable: true, // Allow events to be editable
+      dayMaxEvents: true, // Display a popup if too many events
+      contentHeight: 'auto' // Auto adjust the height of the calendar
     });
 
+    calendar.render(); // Render the calendar
+  });
 </script>
-<div id="calendar"></div>
+
+<div id="calendar"></div> <!-- Calendar container -->

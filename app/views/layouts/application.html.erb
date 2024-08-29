@@ -2,55 +2,73 @@
 <html>
 <head>
   <title>ICAN Academy</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="Hogo– Creative Admin Multipurpose Responsive Bootstrap4 Dashboard HTML Template" name="description">
   <meta content="Spruko Technologies Private Limited" name="author">
   <meta name="keywords" content="html admin template, bootstrap admin template premium, premium responsive admin template, admin dashboard template bootstrap, bootstrap simple admin template premium, web admin template, bootstrap admin template, premium admin template html5, best bootstrap admin template, premium admin panel template, admin template" />
+
   <!-- Favicon -->
   <link rel="icon" href="assets/brand/icanacademy.png" type="image/x-icon" />
   <link rel="shortcut icon" type="image/x-icon" href="assets/brand/icanacademy.png" />
-  <!-- Title -->
-  <title>Hogo – Creative Admin Multipurpose Responsive Bootstrap4 Dashboard HTML Template</title>
-  <!-- Add these in the head section -->
-  <!--Bootstrap.min css-->
+
+  <!-- Bootstrap.min css -->
   <%= stylesheet_link_tag "application.css" %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  </head>
-<style>
-html, body {
-  height: 100vh;
-}
+  <!-- Custom Styles -->
+  <style>
+    html, body {
+      height: 100vh;
+    }
 
-<%= ".msg-#{current_user&.id}" %> {
-  background-color: #007bff !important;
-  padding: 10px;
-}
-<%= ".cont-#{current_user&.id}" %> {
-  display: flex;
-  justify-content: flex-end
-}
+    <%= ".msg-#{current_user&.id}" %> {
+      background-color: #007bff !important;
+      padding: 10px;
+    }
 
-.navbar-item {
-  font-family: sans-serif;
-  font-size: larger;
-  color: black;
-  font-weight: 500;
-}
+    <%= ".cont-#{current_user&.id}" %> {
+      display: flex;
+      justify-content: flex-end;
+    }
 
-.footer a.text-white-50:hover {
-  text-decoration: underline;
-}
+    .navbar-item {
+      font-family: sans-serif;
+      font-size: larger;
+      color: black;
+      font-weight: 500;
+    }
 
-footer {
-  height: -webkit-fill-available;
-  margin-top: 15%;
-}
-</style>
+    .footer a.text-white-50:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      height: -webkit-fill-available;
+      margin-top: 15%;
+    }
+
+    .navbar-sidebar-items {
+      display: none;
+    }
+
+.sidebar-items {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-sidebar-items {
+        display: block;
+      }
+      .sidebar-items {
+      display: none;
+    }
+    }
+  </style>
+</head>
+
 <body>
   <div class="page">
     <div class="page-main">
@@ -88,6 +106,36 @@ footer {
                 <li class="nav-item">
                   <%= button_to "Log out", destroy_user_session_path, method: :delete, class: 'btn btn-success navbar-item' %>
                 </li>
+                <div class="navbar-sidebar-items">
+                <li class="nav-item ">
+                  <a class="nav-link mr-3 navbar-item" href=<%= dashboards_path %>>Dashboard</a>
+                </li>
+
+                <% if current_user.type == "Teacher" %>
+                  <li class="nav-item">
+                    <a class="nav-link mr-3 navbar-item" href=<%= courses_path %>>My Courses</a>
+                  </li>
+                <% end %>
+
+                <% if current_user.type == "Student" %>
+                  <li class="nav-item">
+                    <a class="nav-link mr-3 navbar-item" href=<%= student_groups_enrolled_path %>>Enrolled Groups</a>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link mr-3 navbar-item" href=<%= search_teachers_path %>>Search Teachers</a>
+                  </li>
+                <% end %>
+
+                <% if current_user.type == "Teacher" %>
+                  <li class="nav-item">
+                    <a class="nav-link mr-3 navbar-item" href=<%= teacher_pending_enrollments_path %>> Pending Enrollments</a>
+                  </li>
+                <% end %>
+                
+                <li class="nav-item">
+                  <a class="nav-link mr-3 navbar-item" href=<%= profile_path(current_user.id) %>>Profile Settings</a>
+                </li>
+                </div>
               <% end %>
             </ul>
           </div>
@@ -98,7 +146,9 @@ footer {
       <!-- Sidebar menu-->
       <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
       <% if current_user %>
+      <div class="sidebar-items">
         <%= render "layouts/sidebar" %>
+      </div>
       <% end %>
       <!--sidemenu end-->
 
@@ -111,6 +161,7 @@ footer {
           <div class="side-app">
             <%= yield %>
           </div>
+          
           <!-- Right-sidebar-->
           <!-- Footer Start -->
           <div class="container-fluid bg-dark text-white footer py-5">
@@ -180,16 +231,16 @@ footer {
     <a href="#top" id="back-to-top">
       <i class="fa fa-angle-up"></i>
     </a>
+
+    <!-- JavaScript files -->
     <%= javascript_include_tag "application" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "jquery-3.2.1.min.js", "popper.min.js", "bootstrap.min.js" %>
     <%= javascript_include_tag "jquery.sparkline.min.js", "circle-progress.min.js", "jquery.rating-stars.js" %>
     <%= javascript_include_tag "moment.min.js", "daterangepicker.js", "sidemenu.js" %>
     <%= javascript_include_tag "easyResponsiveTabs.js", "jquery.mCustomScrollbar.concat.min.js", "owl.carousel.js" %>
-    <%= javascript_include_tag "owl-main.js", "sidebar.js", "chart.bundle.js", "utils.js" %>
+    <%= javascript_include_tag "owl-main.js", "sidebar.js", "utils.js" %>
     <%= javascript_include_tag "jquery.missofis-countdown.js", "counter.js", "raphael-min.js" %>
     <%= javascript_include_tag "morris.js", "index1.js", "custom.js" %>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/javascript/channels/group_chat_channel.js"></script>
   </body>
 </html>

@@ -1,65 +1,151 @@
 <style>
+  /* General styling */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
   .user_img, .user_img_msg {
-  width: 40px;
-  height: 40px;
-}
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-.online_icon {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: #4cd137;
-  bottom: 2px;
-  right: 2px;
-  border: 2px solid white;
-}
+  .online_icon {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #4cd137;
+    bottom: 2px;
+    right: 2px;
+    border: 2px solid white;
+  }
 
-.msg_cotainer, .msg_cotainer_send {
-  max-width: 60%;
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding: 10px;
-  position: relative;
-}
+  .msg_cotainer, .msg_cotainer_send {
+    max-width: 60%;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 
-.msg_cotainer_send {
-  background-color: #007bff;
-  color: white;
-}
+  .msg_cotainer_send {
+    background-color: #007bff;
+    color: white;
+  }
 
-.msg_time, .msg_time_send {
-  font-size: 12px;
-  position: absolute;
-  bottom: -15px;
-}
+  .msg_time, .msg_time_send {
+    font-size: 12px;
+    position: absolute;
+    bottom: -15px;
+  }
 
-.msg_time_send {
-  right: 0;
-  color: rgba(255, 255, 255, 0.5);
-}
+  .msg_time_send {
+    right: 0;
+    color: rgba(255, 255, 255, 0.5);
+  }
 
-.msg_time {
-  left: 0;
-  color: rgba(0, 0, 0, 0.5);
-}
+  .msg_time {
+    left: 0;
+    color: rgba(0, 0, 0, 0.5);
+  }
 
-.img_cont_msg {
-  width: 40px;
-  height: 40px;
-}
+  .img_cont_msg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
 
-.card-body.msg_card_body {
-  overflow-y: auto;
-  height: 400px;
-}
+  .card-body.msg_card_body {
+    overflow-y: auto;
+    height: 400px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+  }
 
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
+  }
+
+  .card-header .input-group {
+    border-radius: 5px;
+  }
+
+  .input-group .form-control {
+    border-radius: 0 5px 5px 0;
+  }
+
+  .chat {
+    padding: 15px;
+  }
+
+  .contacts, .rooms {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .contacts li, .rooms li {
+    margin-bottom: 10px;
+  }
+
+  .action-header {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .action-header h4 {
+    margin: 0;
+    color: white;
+  }
+
+  .card-footer {
+    padding: 15px;
+    border-radius: 0 0 10px 10px;
+    background-color: #f8f9fa;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .user_img, .user_img_msg {
+      width: 35px;
+      height: 35px;
+    }
+
+    .msg_cotainer, .msg_cotainer_send {
+      max-width: 75%;
+    }
+
+    .card-body.msg_card_body {
+      height: 300px;
+    }
+  }
 </style>
+
 <div class="row">
   <!-- Side Panel: User List and Rooms -->
   <div class="col-md-12 col-lg-5 col-xl-4">
     <div class="card">
-      <div class="card-header pt-4 pb-4">
+      <div class="card-header">
         <div class="input-group">
           <input type="text" class="form-control bg-white" placeholder="Search users...">
           <div class="input-group-append">
@@ -80,15 +166,15 @@
           <% if @group %>
             <h2 class="card-subtitle text-dark mb-3">Rooms</h2>
             <% unless @rooms.exists? %>
-            <%= render partial: "layouts/new_room_form" %>
-            <%else%>
-            <%= turbo_stream_from "rooms" %>
-            <div id="rooms">
-              <ul class="list-group list-group-flush">
-                <%= render @rooms %>
-              </ul>
-            </div>
-            <%end%>
+              <%= render partial: "layouts/new_room_form" %>
+            <% else %>
+              <%= turbo_stream_from "rooms" %>
+              <div id="rooms">
+                <ul class="list-group list-group-flush">
+                  <%= render @rooms %>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
         </ul>
       </div>
@@ -113,17 +199,18 @@
         <%= turbo_stream_from @single_room %>
         <div id="messages" class="mb-4" data-controller="scroll">
           <% if @messages %>
-          <%= render @messages %>
-          <%end%>
+            <%= render @messages %>
+          <% end %>
         </div>
       </div>
       
       <!-- Chat Footer -->
       <div class="card-footer">
         <% if @rooms.exists? %>
-        <%= render partial: 'layouts/new_message_form' %>
-        <%end%>
+          <%= render partial: 'layouts/new_message_form' %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
+

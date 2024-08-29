@@ -1,3 +1,114 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background-color: #fff;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .btn-outline-primary {
+    border: 1px solid #007bff;
+    color: #007bff;
+    background-color: transparent;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+
+  iframe {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
 <h1><%= @homework.title %></h1>
 
 <div class="card mb-4">
@@ -6,18 +117,18 @@
     <p class="card-text"><strong>Description:</strong> <%= @homework.description %></p>
     <p class="card-text"><strong>Google Form:</strong></p>
     <% if @homework.google_form_link.present? %>
-      <iframe id="homework-form-iframe" src="<%= @homework.google_form_link %>" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe id="homework-form-iframe" src="<%= @homework.google_form_link %>" width="100%" height="600px" frameborder="0" marginheight="0" marginwidth="0" style="border: none; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">Loading…</iframe>
     <% else %>
       <p>No Google Form link provided.</p>
     <% end %>
     <% if @homework.file.attached? %>
-      <p class="card-text"><strong>File:</strong> <%= link_to 'Download', url_for(@homework.file), class: 'btn btn-outline-primary btn-sm' %></p>
+      <p class="card-text"><strong>File:</strong></p>
+      <p><%= link_to 'Download', url_for(@homework.file), class: 'btn btn-outline-primary btn-sm' %></p>
     <% end %>
   </div>
 </div>
 
-
-<%= link_to 'Back', course_group_homeworks_path(@homework.group.course, @homework.group), class: 'btn btn-secondary' %>
+<%= link_to 'Back', course_group_homeworks_path(@homework.group.course, @homework.group), class: 'btn btn-secondary mt-3' %>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,4 +149,5 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 </script>
+
 

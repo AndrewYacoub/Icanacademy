@@ -1,4 +1,14 @@
-<h1 class="mb-4">Homeworks</h1>
+<style>
+  .form-heading {
+    text-align: center; /* Center align the heading */
+    font-size: 2rem; /* Set base font size */
+    font-weight: bold; /* Make the heading bold */
+    color: #333; /* Set heading color */
+    margin-top: 20px; /* Add space above */
+    margin-bottom: 20px; /* Add space below */
+  }
+</style>
+<h1 class="form-heading">Homeworks</h1>
 
 <div class="d-flex justify-content-end mb-3">
   <%= link_to 'New Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary' %>
@@ -6,7 +16,7 @@
 
 <div class="row">
   <% @homeworks.each do |homework| %>
-    <div class="col-md-6 col-lg-4 mb-4">
+    <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
       <div class="card shadow-sm h-100">
         <div class="card-body d-flex flex-column">
           <h5 class="card-title"><%= link_to homework.title, course_group_homework_path(@group.course, @group, homework), class: 'stretched-link' %></h5>

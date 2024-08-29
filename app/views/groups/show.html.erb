@@ -1,4 +1,5 @@
 <style>
+  .course-header,
   .sessions-header {
     font-size: 2rem;
     font-weight: bold;
@@ -10,28 +11,63 @@
     border-radius: 0.25rem;
   }
 
+  .course-actions {
+    margin-bottom: 20px;
+  }
+
+  .course-actions a {
+    margin-right: 15px;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .course-actions a:hover {
+    transform: translateY(-2px);
+  }
+
+  .course-actions a:last-child {
+    margin-right: 0;
+  }
+
   .sessions-table {
     width: 100%;
     margin-top: 20px;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-collapse: separate; /* Separate borders for better control */
+    border-spacing: 0; /* Remove default spacing */
+    overflow: hidden; /* Ensure content stays within the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 0.5rem; /* Rounded corners */
+    background-color: #fff; /* White background for the table */
   }
 
   .sessions-table th,
   .sessions-table td {
     padding: 15px;
     text-align: left;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6; /* Subtle border for separation */
   }
 
   .sessions-table th {
     background-color: #007bff;
     color: white;
     font-weight: bold;
+    text-align: center; /* Centered text for headers */
+    text-transform: uppercase; /* Uppercase for headers */
   }
 
-  .sessions-table tr:hover {
-    background-color: #f1f1f1;
+  .sessions-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Alternating row color for readability */
+  }
+
+  .sessions-table tbody tr:hover {
+    background-color: #f1f1f1; /* Subtle hover effect */
+  }
+
+  .sessions-table td {
+    text-align: center; /* Center text for all table cells */
+    vertical-align: middle; /* Center content vertically */
   }
 
   .join-meeting-link {
@@ -40,16 +76,67 @@
     padding: 8px 12px;
     border-radius: 4px;
     text-decoration: none;
+    transition: background-color 0.3s ease;
   }
 
   .join-meeting-link:hover {
     background-color: #218838;
-    color: white;
   }
 
+  .list-group-item {
+    margin-bottom: 10px; /* Add margin-bottom for spacing between items */
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .card {
+    margin-bottom: 20px;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  /* Mobile styling */
   @media (max-width: 768px) {
+    .course-header,
     .sessions-header {
       font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .course-actions {
+      display: flex;
+      flex-direction: column; /* Stack buttons vertically */
+      align-items: center; /* Center buttons horizontally */
+    }
+
+    .course-actions a {
+      width: 90%; /* Make buttons full width with some padding */
+      margin-bottom: 10px; /* Add space between buttons */
+      margin-right: 0; /* Remove right margin */
+    }
+
+    .sessions-table {
+      display: block; /* Make table scrollable on small screens */
+      width: 100%; /* Full width for the table */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+      border-radius: 0.5rem; /* Keep rounded corners */
     }
 
     .sessions-table th,
@@ -57,19 +144,31 @@
       padding: 10px;
       font-size: 0.9rem;
     }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+    }
   }
 </style>
 
 <h1 class="display-4 mb-4">Group Details</h1>
-<div class="d-flex justify-content-end mb-3">
-  <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary ml-2' %>
-  <%= link_to 'Create Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
-  <%= link_to 'Edit Group', edit_course_group_path(@group.course, @group), class: 'btn btn-warning ml-2' %>
-  <%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary ml-2' %>
-  <%= link_to 'Chat Room', course_group_room_path(@group.course, @group), class: 'btn btn-primary ml-2' %>
+<div class="course-actions">
+  <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary' %>
+  <%= link_to 'Create Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary' %>
+  <%= link_to 'Edit Group', edit_course_group_path(@group.course, @group), class: 'btn btn-warning' %>
+  <%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary' %>
+  <%= link_to 'Chat Room', course_group_room_path(@group.course, @group), class: 'btn btn-primary' %>
 </div>
 
-<div class="card mb-4">
+<div class="card">
   <div class="card-body">
     <h5 class="card-title">Course</h5>
     <p class="card-text"><%= @group.name %></p>
@@ -79,7 +178,7 @@
   </div>
 </div>
 
-<div class="card mb-4">
+<div class="card">
   <div class="card-body">
     <h5 class="card-title">Session Details</h5>
     <% if @group.recurrence_days.present? %>
@@ -95,11 +194,10 @@
 </div>
 
 <% unless current_user.type == "Teacher" %>
-  <div class="card mb-4">
+  <div class="card">
     <div class="card-body">
       <h5 class="card-title">Enrollments</h5>
       <%= button_to 'Enroll', group_enrollments_path(@group), method: :post, class: 'btn btn-success mb-3' %>
-
       <ul class="list-group">
         <% @group.enrollments.each do |enrollment| %>
           <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -114,7 +212,7 @@
 
 <h1 class="sessions-header"><%= @group.name %> Sessions</h1>
 
-<table class="sessions-table table table-hover">
+<table class="sessions-table">
   <thead>
     <tr>
       <th>Date</th>
@@ -129,17 +227,17 @@
         <td><%= (session.start_time - 3.hours).strftime("%A, %B %d, %Y") %></td>
         <td><%= (session.start_time - 3.hours).strftime("%I:%M %p") %></td>
         <td><%= (session.end_time - 3.hours).strftime("%I:%M %p") %></td>
-        <td><%= link_to 'Join Meeting', session.google_meet_link, class: 'join-meeting-link' %></td>
+        <td><%= link_to 'Join', session.google_meet_link, class: 'join-meeting-link' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <% unless current_user.type == "Student" %>
-  <div class="card mb-4">
+  <div class="card">
     <div class="card-body">
       <h5 class="card-title">Add New Session Modification</h5>
-      <%= form_with(model: [ @course, @group, @group.session_modifications.build ], local: true, html: { class: 'form-horizontal' }) do |form| %>
+      <%= form_with(model: [@course, @group, @group.session_modifications.build], local: true, html: { class: 'form-horizontal' }) do |form| %>
         <div class="form-group">
           <%= form.label :date, "Date of Modification", class: 'control-label' %>
           <%= form.date_field :date, class: 'form-control' %>
@@ -160,7 +258,7 @@
   </div>
 
   <h3 class="mt-4">List of Session Modifications</h3>
-  <div class="card mb-4">
+  <div class="card">
     <div class="card-body">
       <table class="table table-bordered table-hover">
         <thead>
