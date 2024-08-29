@@ -71,14 +71,18 @@
       font-size: 1rem; /* Smaller font size for button */
       margin-top: 15px; /* Margin for spacing */
     }
+    .tableheader {
+      background-color: blue;
+      color: white;
+    }
   }
 </style>
 
 
-<div class="container">
-  <div class="table-wrapper">
+<div class="container ">
+  <div class="table-wrapper ">
     <h1 class="my-4 text-center">My Courses</h1>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover ">
       <thead class="thead-dark">
         <tr>
           <th>Title</th>
@@ -88,8 +92,8 @@
       </thead>
       <tbody>
         <% @courses.each do |course| %>
-          <tr>
-            <td data-label="Title"><%= link_to course.title, course, class: 'text-decoration-none text-dark' %></td>
+          <tr class="mb-3">
+            <td data-label="Title" class="tableheader"><%= link_to course.title, course, class: 'text-decoration-none text-white' %></td>
             <td data-label="Description"><%= course.description %></td>
             <td data-label="Actions" class="actions">
               <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-sm btn-warning' %>

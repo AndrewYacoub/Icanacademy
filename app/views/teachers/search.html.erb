@@ -127,9 +127,11 @@
           <span><%= teacher.first_name %> <%= teacher.last_name %></span>
           <p><%= teacher.teaching %> Teacher</p>
           <ul>
-            <% teacher.courses.first.groups.each do |group| %>
+            <%if teacher.courses&.first.groups.present?%>
+            <% teacher.courses&.first.groups&.each do |group| %>
               <li><%= link_to group.name, course_group_path(teacher.courses.first, group) %></li>
             <% end %>
+            <%end%>
           </ul>
         </li>
       <% end %>
