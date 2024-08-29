@@ -3,7 +3,7 @@ class TeachersController < ApplicationController
 
     def search
         if params[:query].present?
-            @teachers = Teacher.where("email LIKE ?", "%#{params[:query]}%")  # Adjust according to your User model
+            @teachers = Teacher.where("first_name LIKE ?", "%#{params[:query]}%")  # Adjust according to your User model
         else
             @teachers = Teacher.all  # Or limit to some default scope
         end
