@@ -20,7 +20,10 @@
   .actions a:last-child {
     margin-right: 0;
   }
-
+    .tableheader {
+      background-color: white;
+      color: black;
+    }
   /* Mobile styling */
   @media (max-width: 768px) {
     .table-wrapper {
@@ -93,11 +96,12 @@
       <tbody>
         <% @courses.each do |course| %>
           <tr class="mb-3">
-            <td data-label="Title" class="tableheader"><%= link_to course.title, course, class: 'text-decoration-none text-white' %></td>
+            <td data-label="Title" class="tableheader"><%= link_to course.title, course, class: 'text-decoration-none tableheader' %></td>
             <td data-label="Description"><%= course.description %></td>
-            <td data-label="Actions" class="actions">
+            <td data-label="Actions" class="actions d-flex">
               <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-sm btn-warning' %>
-              <%= link_to 'Delete', course, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+              <%= link_to 'Show', course_path(course),  class: 'btn btn-sm btn-success' %>
+              <%= button_to 'Delete', course_path(course), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
             </td>
           </tr>
         <% end %>

@@ -54,7 +54,8 @@ class GoogleFormsService
                     "https://drive.google.com/uc?id=#{file_id}"
                   end
   
-      {
+      # Construct the base request
+      create_item_request = {
         create_item: {
           item: {
             title: question['text'],
@@ -73,9 +74,6 @@ class GoogleFormsService
                   type: map_question_type(question['type']),
                   options: choices.map { |choice| { value: choice } }
                 }
-              },
-              image: {
-                source_uri: image_url
               }
             }
           },
@@ -84,6 +82,15 @@ class GoogleFormsService
           }
         }
       }
+  
+      # Conditionally add the image if image_url is present
+      if image_url
+        create_item_request[:create_item][:item][:question_item][:image] = {
+          source_uri: image_url
+        }
+      end
+  
+      create_item_request
     end
   
     Rails.logger.debug "Batch update requests: #{requests.inspect}"
@@ -93,6 +100,7 @@ class GoogleFormsService
     )
     @service.batch_update_form(form_id, batch_update_request)
   end
+  
   
 
   def make_form_public(form_id)
