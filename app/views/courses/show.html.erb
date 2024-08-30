@@ -106,8 +106,9 @@
   <h2 class="h4">Groups in this Course</h2>
   <ul class="list-group mb-4">
     <% @course.groups.each do |group| %>
-      <li class="list-group-item">
+      <li class="list-group-item d-flex justify-content-between">
         <%= link_to group.name, course_group_path(@course, group), class: 'text-decoration-none text-dark' %>
+        <%= button_to "Delete", course_group_path(@course, group),method: :delete, class: 'btn btn-danger' %>
       </li>
     <% end %>
   </ul>

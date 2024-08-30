@@ -49,7 +49,7 @@ class GroupsController < ApplicationController
   
     def destroy
       @group.destroy
-      redirect_to course_groups_path(@course), notice: 'Group was successfully destroyed.'
+      redirect_to course_path(@course), notice: 'Group was successfully destroyed.'
     end
   
 
@@ -96,16 +96,6 @@ class GroupsController < ApplicationController
       )
     end
 
-    # def create_sessions_for_group(group)
-    #   group.calculate_session_occurrences.each do |occurrence|
-    #     session = group.sessions.create!(
-    #       start_time: occurrence,
-    #       end_time: occurrence + (group.end_time - group.start_time)
-    #     )
-    #     session.update!(google_meet_link: group.create_google_meet_link(group, session))
-    #   end
-    # end
-
     def create_sessions_for_group(group)
       group.recurrence_days.each do |day|
         occurrences = group.calculate_session_occurrences(day)
@@ -129,6 +119,5 @@ class GroupsController < ApplicationController
         end
       end
     end    
-
-  end
+end
   
