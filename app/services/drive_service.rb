@@ -1,5 +1,7 @@
 require 'google/apis/drive_v3'
 require 'googleauth'
+require 'mimemagic'
+
 class DriveService
   DRIVE = Google::Apis::DriveV3
 
@@ -16,11 +18,16 @@ class DriveService
     file_metadata = {
       name: File.basename(file_path)
     }
-    file = @service.create_file(file_metadata, upload_source: file_path, content_type: 'image/jpeg')
-    
+
+    # Correctly get the content type from MimeMagic instance
+    mime_type = MimeMagic.by_path(file_path)
+    content_type = mime_type ? mime_type.type : 'application/octet-stream'
+
+    file = @service.create_file(file_metadata, upload_source: file_path, content_type: content_type)
+
     # Make the file publicly accessible
     create_permission(file.id, { role: 'reader', type: 'anyone' })
-    
+
     file.id
   end
 
