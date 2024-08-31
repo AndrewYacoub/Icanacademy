@@ -229,12 +229,17 @@
     </tr>
   </thead>
   <tbody>
+    <% @upcoming_session = @group.sessions.sort_by(&:start_time).find {|session| session.start_time > Time.current()}%>
     <% @group.sessions.sort_by(&:start_time).each do |session| %>
       <tr>
         <td><%= (session.start_time - 3.hours).strftime("%A, %B %d, %Y") %></td>
         <td><%= (session.start_time - 3.hours).strftime("%I:%M %p") %></td>
         <td><%= (session.end_time - 3.hours).strftime("%I:%M %p") %></td>
+        <%if @upcoming_session == session%>
         <td><%= link_to 'Join', session.google_meet_link, class: 'join-meeting-link' %></td>
+        <%else%>
+          <td> <span class="badge badge-secondary"> Disabled</span> </td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>
