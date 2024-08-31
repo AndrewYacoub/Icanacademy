@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-	before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_course
   before_action :set_group
   before_action :load_users_and_rooms, only: [:index, :show, :create]
@@ -42,7 +42,8 @@ class RoomsController < ApplicationController
 
   def load_users_and_rooms
     @users = @group.enrollments.where(status: 'approved_by_teacher').map(&:student)
+    @room_creator = User.find(@course.teacher_id)
+    @users <<  @room_creator
     @rooms = Room.where(group_id: @group.id)
   end
-  
 end

@@ -7,7 +7,7 @@
     <% end %>
   </div>
   <div class="user_info">
-    <%= link_to "#{teacher.first_name} #{teacher.last_name}", teacher, class: 'mr-auto username' %>
+    <%= link_to "#{teacher.first_name} #{teacher.last_name}", teacher_path(teacher), class: 'mr-auto username' %>
     <small class="text-muted"><%= teacher.active? ? 'Online' : 'Offline' %></small>
   </div>
 </li>

@@ -161,11 +161,16 @@
 
 <h1 class="display-4 mb-4">Group Details</h1>
 <div class="course-actions">
+  <% if @enrollment_status == "approved_by_teacher" || current_user.id ==  @course_creator.id%>
   <%= link_to 'Homeworks', course_group_homeworks_path(@group.course, @group), class: 'btn btn-secondary' %>
+  <% end %>
+  <% if current_user.id ==  @course_creator.id%>
   <%= link_to 'Create Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary' %>
-  <%= link_to 'Edit Group', edit_course_group_path(@group.course, @group), class: 'btn btn-warning' %>
+  <% end %>
   <%= link_to 'Back to Courses', courses_path, class: 'btn btn-secondary' %>
+  <% if @enrollment_status == "approved_by_teacher" || current_user.id ==  @course_creator.id%>
   <%= link_to 'Chat Room', course_group_room_path(@group.course, @group), class: 'btn btn-primary' %>
+  <%end%>
 </div>
 
 <div class="card">
@@ -193,23 +198,25 @@
   </div>
 </div>
 
-<% unless current_user.type == "Teacher" %>
+  <% if current_user !=  @course_creator%>
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Enrollments</h5>
       <%= button_to 'Enroll', group_enrollments_path(@group), method: :post, class: 'btn btn-success mb-3' %>
       <ul class="list-group">
         <% @group.enrollments.each do |enrollment| %>
+            <%if enrollment.student.id == current_user.id %>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <%= enrollment.student.first_name %> <%= enrollment.student.last_name %>
             <%= button_to 'Unenroll', group_enrollment_path(@group, enrollment), method: :delete, class: 'btn btn-danger btn-sm' %>
           </li>
+            <%end%>
         <% end %>
       </ul>
     </div>
   </div>
 <% end %>
-
+<% if @enrollment_status == "approved_by_teacher" || current_user.id ==  @course_creator.id%>
 <h1 class="sessions-header"><%= @group.name %> Sessions</h1>
 
 <table class="sessions-table">
@@ -232,7 +239,7 @@
     <% end %>
   </tbody>
 </table>
-
+<% end %>
 <% unless current_user.type == "Student" %>
   <div class="card">
     <div class="card-body">

@@ -1,8 +1,9 @@
 class StudentsController < ApplicationController
-	before_action :authenticate_user!
+  before_action :authenticate_user!
+
   def show
     @student = User.find(params[:id])
-    @users = User.where.not(id: current_user&.id)
+    @users = User.where(type: 'Student', id: @student.id)
 
     @rooms = Room.public_rooms
     @room = Room.new

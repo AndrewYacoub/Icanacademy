@@ -1,7 +1,8 @@
 class GroupsController < ApplicationController
   before_action :set_course
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-  
+  before_action :set_creator
+  before_action :set_enrollment_status
     def index
       @groups = @course.groups  # Lists only groups that belong to the set course
     end
@@ -83,6 +84,14 @@ class GroupsController < ApplicationController
     def set_group
         @group = @course.groups.find_by(id: params[:id])
         redirect_to course_groups_path(@course), alert: 'Group not found.' unless @group
+    end
+
+    def set_creator
+      @course_creator= User.find(@course.teacher_id)
+    end
+
+    def set_enrollment_status
+      @enrollment_status = Enrollment.find_by(student_id: current_user.id, group_id: @group.id)&.status || "not_enrolled"
     end
 
     def group_params
