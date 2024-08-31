@@ -1,5 +1,5 @@
 class EnrollmentsController < ApplicationController
-    before_action :set_group
+    before_action :set_group, only: [:create, :destroy]
     def create
       @enrollment = @group.enrollments.build(student_id: current_user.id, status:0)  # Assumes current_user is a student
       if @enrollment.save
@@ -32,5 +32,5 @@ class EnrollmentsController < ApplicationController
       def set_group
         @group = Group.find(params[:group_id])
       end
-  end
+end
   

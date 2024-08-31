@@ -67,7 +67,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :rooms, only: [] do
+  resources :rooms, only: [:create, :destroy] do
     resources :messages, only: [:create]
   end
   

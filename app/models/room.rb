@@ -2,7 +2,7 @@ class Room < ApplicationRecord
     validates_uniqueness_of :name
     scope :public_rooms, -> { where(is_private: false) }
     after_create_commit { broadcast_if_public }
-  
+    has_many :users, dependent: :nullify
     has_many :participants, dependent: :destroy
     has_many :messages, dependent: :destroy
     belongs_to :group, optional: true
@@ -23,4 +23,4 @@ class Room < ApplicationRecord
       room.participants.where(user: user).exists?
       Participant.where(user_id: user.id, room_id: room.id).exists?
     end
-  end
+end

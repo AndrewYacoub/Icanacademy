@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_one :room 
 
-  # validates :profile_picture_url, content_type: ['image/png', 'image/jpg', 'image/jpeg'], size: { less_than: 5.megabytes }
+  validates :first_name, :last_name, presence: true
 
   def student?
     type == 'Student'

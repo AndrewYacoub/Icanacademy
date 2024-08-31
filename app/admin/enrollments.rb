@@ -40,7 +40,7 @@ ActiveAdmin.register Enrollment do
 
   member_action :decline, method: :put do
     enrollment = Enrollment.find(params[:id])
-    enrollment.update(status: 'declined')
+    enrollment.update(status: 'declined_by_admin') 
     redirect_to admin_enrollments_path, notice: "Enrollment declined."
   end
 

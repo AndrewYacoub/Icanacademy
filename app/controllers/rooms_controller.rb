@@ -2,6 +2,7 @@ class RoomsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
   before_action :set_group
+  before_action :set_room, only: [:destroy]
   before_action :load_users_and_rooms, only: [:index, :show, :create]
 
   def index
@@ -25,7 +26,23 @@ class RoomsController < ApplicationController
     render 'index'
   end
 
+  def destroy
+    @current_room = Room.find(params[:id])
+    
+    # Handling dependencies manually
+    @current_room.users.update_all(room_id: nil)  # or use @room.users.destroy_all if you want to delete them
+  
+    @current_room.destroy
+    redirect_to course_group_path(@current_room.group.course, @current_room.group), notice: 'Room was successfully deleted.'
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to course_group_path(@current_room.group.course, @current_room.group), alert: "Cannot delete room due to associated records."
+  end
+
   private
+
+  def set_room
+    @current_room = Room.find(params[:id])
+  end
 
   def room_params
     params.require(:room).permit(:name)
