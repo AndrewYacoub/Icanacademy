@@ -1,8 +1,8 @@
 class GroupsController < ApplicationController
   before_action :set_course
   before_action :set_group, only: [:show, :edit, :update, :destroy]
-  before_action :set_creator
-  before_action :set_enrollment_status
+  before_action :set_creator, only: [:show]
+  before_action :set_enrollment_status, only: [:show]
     def index
       @groups = @course.groups  # Lists only groups that belong to the set course
     end

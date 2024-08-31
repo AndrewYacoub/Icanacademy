@@ -52,5 +52,5 @@ class CoursesController < ApplicationController
       def authenticate_teacher!
         redirect_to root_path unless current_user.is_a?(Teacher)
       end
-  end
+end
   
