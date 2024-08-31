@@ -5,8 +5,9 @@
     padding: 20px;
     border: 1px solid #dee2e6;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
+    text-align: center; /* Center align the profile picture */
   }
   .profile-header {
     font-size: 2.5rem;
@@ -14,6 +15,14 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+  }
+  .profile-picture {
+    border-radius: 50%;
+    margin-bottom: 20px;
+    width: 150px; /* Adjust the size as needed */
+    height: 150px; /* Adjust the size as needed */
+    object-fit: cover; /* Ensure the picture fits the circle */
+    border: 2px solid #007bff; /* Optional: add a border around the picture */
   }
   .profile-detail {
     font-size: 1.25rem;
@@ -40,20 +49,29 @@
     border-color: #d39e00;
   }
 </style>
+
 <div class="profile-container">
   <h1 class="profile-header">Profile</h1>
-  <p class="profile-detail"><strong>Email:</strong> <%= @user.first_name %></p>
-  <p class="profile-detail"><strong>Name:</strong> <%= @user.last_name %></p>
+  
+  <!-- Profile Picture -->
+  <% if @user.profile_picture_url.present? %>
+    <%= image_tag @user.profile_picture_url, class: 'profile-picture' %>
+  <% end %>
+  
+  <p class="profile-detail"><strong>Email:</strong> <%= @user.email %></p>
+  <p class="profile-detail"><strong>Name:</strong> <%= @user.first_name %> <%= @user.last_name %></p>
   <p class="profile-detail"><strong>Phone Number:</strong> <%= @user.phone_number %></p>
   <p class="profile-detail"><strong>Education Level:</strong> <%= @user.education_level %></p>
   <p class="profile-detail"><strong>Country:</strong> <%= @user.country %></p>
   <p class="profile-detail"><strong>Address:</strong> <%= @user.address %></p>
-  <% if @user.type == "Teacher"%>
-  <p class="profile-detail"><strong>Teaching:</strong> <%= @user.teaching %></p>
-  <%end%>
-  <% if @user.type == "Student"%>
-  <p class="profile-detail"><strong>Parent_phone_number:</strong> <%= @user.parent_phone_number %></p>
-  <%end%>
+  
+  <% if @user.type == "Teacher" %>
+    <p class="profile-detail"><strong>Teaching:</strong> <%= @user.teaching %></p>
+  <% end %>
+  
+  <% if @user.type == "Student" %>
+    <p class="profile-detail"><strong>Parent Phone Number:</strong> <%= @user.parent_phone_number %></p>
+  <% end %>
 
   <%= link_to 'Edit Profile', edit_profile_path, class: 'btn btn-warning' %>
 </div>

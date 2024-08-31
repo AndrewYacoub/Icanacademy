@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :groups, through: :enrollments
   has_many :messages
   after_create_commit { broadcast_append_to 'users' }
-  has_one_attached :profile_picture
+  has_one_attached :profile_picture_url
 
   has_many :messages, dependent: :destroy
   has_one :room 

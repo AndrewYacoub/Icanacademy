@@ -21,9 +21,9 @@ class ProfilesController < ApplicationController
   private
 
   def user_params
-    if current_user.type = "Teacher"
+    if current_user.type == "Teacher"
       params.require(:teacher).permit(:first_name, :last_name, :phone_number, :education_level, :country, :address, :teaching, :profile_picture_url)
-    elsif current_user.type = "Student"
+    elsif current_user.type == "Student"
       params.require(:student).permit(:first_name, :last_name, :phone_number, :education_level, :country, :address, :parent_phone_number, :profile_picture_url)
     end
   end
