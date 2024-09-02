@@ -123,27 +123,24 @@
   <% if @teachers.present? %>
     <ul class="teacher-list">
       <% @teachers.each do |teacher| %>
-      <% if teacher.first_name.present? && teacher.last_name.present? %>
-        <li>
-          <span><%= teacher.first_name %> <%= teacher.last_name %></span>
-          <p><%= teacher.teaching %> Teacher</p>
-          <%if teacher.courses.present?%>
-            <% teacher.courses.each do |course|%>
-            <% if course.groups.count > 1 %>
-            <h1><%= course.title%> </h1>
-          <ul>
-
-            <%if course.groups.present? %>
-            <% course.groups.each do |group| %>
-              <li><%= link_to group.name, course_group_path(teacher.courses.first, group) %></li>
-            <% end %>
-            <%end%>  
-          </ul>
-            <%end%>
-            <%end%>
-            <%end%> 
-        </li>
-        <%end%>
+        <% if teacher.first_name.present? && teacher.last_name.present? %>
+          <li>
+            <span><%= teacher.first_name %> <%= teacher.last_name %></span>
+            <p><%= teacher.teaching %> Teacher</p>
+            <% if teacher.courses.present? %>
+              <% teacher.courses.each do |course| %>
+                <% if course.groups.any? %>
+                  <h1><%= course.title %></h1>
+                  <ul>
+                    <% course.groups.each do |group| %>
+                      <li><%= link_to group.name, course_group_path(course, group) %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
+              <% end %>
+            <% end %> 
+          </li>
+        <% end %>
       <% end %>
     </ul>
   <% else %>
