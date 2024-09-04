@@ -18,7 +18,15 @@ class Room < ApplicationRecord
       end
       single_room
     end
-  
+
+    def self.ransackable_attributes(auth_object = nil)
+      ["created_at", "group_id", "id", "id_value", "is_private", "name", "updated_at"]
+    end
+
+    def self.ransackable_associations(auth_object = nil)
+      ["group", "messages", "participants", "users"]
+    end
+    
     def participant?(room, user)
       room.participants.where(user: user).exists?
       Participant.where(user_id: user.id, room_id: room.id).exists?

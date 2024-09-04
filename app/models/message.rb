@@ -7,6 +7,14 @@ class Message < ApplicationRecord
   before_create :confirm_participant
   has_one_attached :audio
 
+  def self.ransackable_associations(auth_object = nil)
+    ["audio_attachment", "audio_blob", "file_attachment", "file_blob", "image_attachment", "image_blob", "room", "user"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["content", "created_at", "id", "id_value", "room_id", "updated_at", "user_id"]
+  end
+  
   def confirm_participant
     if room.is_private
       is_participant = Participant.where(user_id: user.id, room_id: room.id).first

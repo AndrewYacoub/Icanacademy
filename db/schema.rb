@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_24_190351) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_03_095500) do
   create_table "active_admin_comments", charset: "utf8mb3", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -99,6 +99,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_24_190351) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.integer "creator_id"
     t.index ["course_id"], name: "index_groups_on_course_id"
   end
 
@@ -221,7 +222,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_24_190351) do
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
   add_foreign_key "participants", "rooms"
-  add_foreign_key "participants", "users"
+  add_foreign_key "participants", "users", on_delete: :cascade
   add_foreign_key "session_modifications", "groups"
   add_foreign_key "sessions", "groups"
   add_foreign_key "solutions", "homeworks"

@@ -22,5 +22,14 @@ class Group < ApplicationRecord
     schedule = IceCube::Schedule.new(self.start_date)
     schedule.add_recurrence_rule IceCube::Rule.weekly.day(day.downcase.to_sym).until(self.end_date)
     schedule.all_occurrences
-  end  
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["course_id", "created_at", "creator_id", "end_date", "end_time", "id", "id_value", "name", "start_date", "start_time", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["chat_messages", "course", "enrollments", "homeworks", "room", "session_modifications", "sessions", "students"]
+  end
+  
 end
