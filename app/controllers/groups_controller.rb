@@ -10,6 +10,7 @@ class GroupsController < ApplicationController
     def show
       @course = Course.find(params[:course_id])
       @group = @course.groups.find(params[:id])
+      @enrolled_students = @group.enrollments.pluck(:student_id)
     end
   
     def new
