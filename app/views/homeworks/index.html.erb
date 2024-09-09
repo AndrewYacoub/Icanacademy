@@ -9,11 +9,11 @@
   }
 </style>
 <h1 class="form-heading">Homeworks</h1>
-
-<div class="d-flex justify-content-end mb-3">
-  <%= link_to 'New Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary' %>
-</div>
-
+<% if current_user.type == "Teacher" %>
+  <div class="d-flex justify-content-end mb-3">
+    <%= link_to 'New Homework', new_course_group_homework_path(@group.course, @group), class: 'btn btn-primary' %>
+  </div>
+<% end %>
 <div class="row">
   <% @homeworks.each do |homework| %>
     <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
