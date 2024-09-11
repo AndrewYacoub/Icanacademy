@@ -222,7 +222,7 @@
       </ul>
     </div>
   </div>
-<% if @enrollment_status == "approved_by_teacher"%>
+<% if @enrollment_status == "approved_by_teacher" || current_user.id ==  @course_creator.id%>
 <h1 class="sessions-header"><%= @group.name %> Sessions</h1>
 
 <table class="sessions-table">
