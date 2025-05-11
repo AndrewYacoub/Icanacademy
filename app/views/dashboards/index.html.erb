@@ -1,107 +1,210 @@
-<style>
-  /* Custom styles for the calendar container */
-  #calendar {
-    max-width: 90%; /* Set maximum width */
-    margin: 20px auto; /* Center the calendar with auto margins */
-    border-radius: 8px; /* Round the corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    background-color: #ffffff; /* Set background color to white */
-    border: 1px solid #e0e0e0; /* Light gray border */
-  }
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Welcome Section -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-900">
+        Welcome back, <%= current_user.first_name %>!
+      </h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Here's what's happening in your <%= current_user.type.downcase %> account
+      </p>
+    </div>
 
-  /* Custom styles for the list view */
-  .fc-list {
-    border-radius: 8px; /* Round the corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    background-color: #ffffff; /* Set background color to white */
-    border: 1px solid #e0e0e0; /* Light gray border */
-  }
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+      <!-- Total Sessions -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="fas fa-calendar text-primary-600 text-2xl"></i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Total Sessions</dt>
+                <dd class="text-lg font-semibold text-gray-900"><%= @total_sessions %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-5 py-3">
+          <div class="text-sm">
+            <a href="#" class="font-medium text-primary-600 hover:text-primary-900">View all sessions</a>
+          </div>
+        </div>
+      </div>
 
-  /* Custom styles for list items */
-  .fc-list-item {
-    border-bottom: 1px solid #e0e0e0; /* Light gray border between items */
-  }
+      <!-- Active Courses/Groups -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="fas fa-book text-primary-600 text-2xl"></i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">
+                  <%= current_user.teacher? ? 'Active Courses' : 'Enrolled Groups' %>
+                </dt>
+                <dd class="text-lg font-semibold text-gray-900"><%= @active_courses %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-5 py-3">
+          <div class="text-sm">
+            <a href="<%= current_user.teacher? ? courses_path : student_groups_enrolled_path %>" 
+               class="font-medium text-primary-600 hover:text-primary-900">
+              View all
+            </a>
+          </div>
+        </div>
+      </div>
 
-  .fc-list-item:hover {
-    background-color: #f9f9f9; /* Light background color on hover */
-  }
+      <!-- Pending Items -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="fas fa-clock text-yellow-500 text-2xl"></i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">
+                  <%= current_user.teacher? ? 'Pending Enrollments' : 'Pending Homework' %>
+                </dt>
+                <dd class="text-lg font-semibold text-gray-900"><%= @pending_items %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-5 py-3">
+          <div class="text-sm">
+            <a href="<%= current_user.teacher? ? teacher_pending_enrollments_path : homeworks_path %>" 
+               class="font-medium text-primary-600 hover:text-primary-900">
+              View all
+            </a>
+          </div>
+        </div>
+      </div>
 
-  .fc-list-item-time {
-    font-weight: bold; /* Make the time bold */
-  }
+      <!-- Messages -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+        <div class="p-5">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <i class="fas fa-envelope text-primary-600 text-2xl"></i>
+            </div>
+            <div class="ml-5 w-0 flex-1">
+              <dl>
+                <dt class="text-sm font-medium text-gray-500 truncate">Unread Messages</dt>
+                <dd class="text-lg font-semibold text-gray-900"><%= @unread_messages %></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-5 py-3">
+          <div class="text-sm">
+            <a href="<%= rooms_path %>" class="font-medium text-primary-600 hover:text-primary-900">
+              Open messages
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  .fc-list-item-title {
-    color: #007bff; /* Blue color for event titles */
-    font-weight: bold; /* Make the titles bold */
-  }
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Calendar Section -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-medium text-gray-900">Schedule</h2>
+            <p class="mt-1 text-sm text-gray-500">Your upcoming sessions and events</p>
+          </div>
+          <div class="p-6">
+            <div id="calendar"></div>
+          </div>
+        </div>
+      </div>
 
-  /* Custom styles for the header toolbar */
-  .fc-header-toolbar {
-    display: flex; /* Use flexbox layout */
-    justify-content: space-between; /* Space out toolbar items */
-    align-items: center; /* Center align toolbar items vertically */
-    padding: 10px; /* Add padding around toolbar */
-    background-color: #007bff; /* Set background color to blue */
-    color: white; /* Set text color to white */
-    border-radius: 8px 8px 0 0; /* Round top corners */
-  }
+      <!-- Sidebar -->
+      <div class="space-y-8">
+        <!-- Upcoming Sessions -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-medium text-gray-900">Upcoming Sessions</h2>
+          </div>
+          <div class="divide-y divide-gray-100">
+            <% @upcoming_sessions&.each do |session| %>
+              <div class="p-4 hover:bg-gray-50">
+                <div class="flex items-center space-x-4">
+                  <div class="flex-shrink-0">
+                    <div class="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center">
+                      <i class="fas fa-video text-primary-600"></i>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                      <%= session.title %>
+                    </p>
+                    <p class="text-sm text-gray-500">
+                      <%= session.start_time.strftime("%b %d, %I:%M %p") %>
+                    </p>
+                  </div>
+                  <div>
+                    <a href="<%= session.url %>" class="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-primary-600 bg-primary-100 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                      Join
+                    </a>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <% if @upcoming_sessions&.empty? %>
+              <div class="p-4 text-center text-sm text-gray-500">
+                No upcoming sessions scheduled
+              </div>
+            <% end %>
+          </div>
+        </div>
 
-  /* Custom styles for buttons in the header toolbar */
-  .fc-header-toolbar .fc-button {
-    background-color: white; /* Set background color to white */
-    color: #007bff; /* Set text color to blue */
-    border: none; /* Remove border */
-    padding: 5px 10px; /* Add padding */
-    border-radius: 4px; /* Round corners */
-    margin: 0 5px; /* Add margin between buttons */
-  }
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-lg font-medium text-gray-900">Recent Activity</h2>
+          </div>
+          <div class="divide-y divide-gray-100">
+            <% @recent_activities&.each do |activity| %>
+              <div class="p-4 hover:bg-gray-50">
+                <div class="flex space-x-3">
+                  <div class="flex-shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                      <i class="fas <%= activity_icon(activity) %> text-gray-500"></i>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm text-gray-900">
+                      <%= activity.description %>
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      <%= time_ago_in_words(activity.created_at) %> ago
+                    </p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <% if @recent_activities&.empty? %>
+              <div class="p-4 text-center text-sm text-gray-500">
+                No recent activity
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  .fc-header-toolbar .fc-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    color: white; /* White text on hover */
-  }
-
-  .fc-header-toolbar .fc-button-primary {
-    background-color: #0056b3; /* Set background color for primary button */
-    border: none; /* Remove border */
-    color: white; /* Set text color to white */
-  }
-
-  /* Responsive adjustments for mobile screens */
-  @media (max-width: 800px) {
-    #calendar {
-      max-width: 100%; /* Use full width */
-      margin: 10px; /* Reduce margin */
-    }
-
-    .fc-header-toolbar {
-      flex-direction: column; /* Stack toolbar items vertically */
-      align-items: center; /* Center align toolbar items */
-    }
-
-    .fc-header-toolbar .fc-toolbar-chunk {
-      margin-bottom: 5px; /* Add margin below toolbar chunks */
-    }
-
-    .fc-header-toolbar h2 {
-      font-size: 1.2rem; /* Smaller font size for mobile */
-    }
-
-    .fc-header-toolbar .fc-button {
-      font-size: 0.8rem; /* Smaller font size for buttons */
-      margin: 2px; /* Reduce margin between buttons */
-    }
-
-    .fc-list-item {
-      padding: 10px; /* Add padding to list items */
-    }
-
-    .fc-list-item-title {
-      font-size: 1rem; /* Increase font size for event titles */
-    }
-  }
-</style>
-
+<!-- Calendar Scripts -->
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 
@@ -109,39 +212,103 @@
   document.addEventListener('DOMContentLoaded', function() {
     let calendarEl = document.getElementById('calendar');
     let calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth', // Default view for larger screens
-      events: '/dashboards/sessions.json', // URL to fetch events
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      events: '/dashboards/sessions.json',
       eventClick: function(info) {
-        window.open(info.event.url, '_blank'); // Open event link in new tab
+        window.open(info.event.url, '_blank');
       },
       headerToolbar: {
-        left: 'prev,next today', // Left side of the header toolbar
-        center: 'title', // Center of the header toolbar
-        right: 'dayGridMonth,timeGridWeek,timeGridDay' // Right side of the header toolbar
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       views: {
-        dayGridMonth: { // Default view settings for dayGridMonth
-          buttonText: 'Month' // Button text for dayGridMonth view
+        dayGridMonth: {
+          buttonText: 'Month'
         },
-        listMonth: { // Settings for the list view on mobile
-          buttonText: 'List' // Button text for listMonth view
+        timeGridWeek: {
+          buttonText: 'Week'
+        },
+        timeGridDay: {
+          buttonText: 'Day'
         }
       },
-      windowResize: function(view) { // Function to handle window resizing
-        if (window.innerWidth < 768) { // Check if screen width is less than 768px
-          calendar.changeView('listMonth'); // Change to list view for mobile
+      windowResize: function(view) {
+        if (window.innerWidth < 768) {
+          calendar.changeView('listMonth');
         } else {
-          calendar.changeView('dayGridMonth'); // Change to dayGridMonth view for larger screens
+          calendar.changeView('dayGridMonth');
         }
       },
-      // Additional responsive settings if needed
-      editable: true, // Allow events to be editable
-      dayMaxEvents: true, // Display a popup if too many events
-      contentHeight: 'auto' // Auto adjust the height of the calendar
+      editable: true,
+      dayMaxEvents: true,
+      themeSystem: 'standard',
+      slotMinTime: '07:00:00',
+      slotMaxTime: '21:00:00',
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short'
+      },
+      eventDidMount: function(info) {
+        info.el.classList.add('transition', 'duration-150', 'ease-in-out');
+      }
     });
 
-    calendar.render(); // Render the calendar
+    calendar.render();
   });
 </script>
 
-<div id="calendar"></div> <!-- Calendar container -->
+<% content_for :styles do %>
+  <style>
+    .fc {
+      --fc-border-color: theme('colors.gray.200');
+      --fc-button-bg-color: theme('colors.white');
+      --fc-button-border-color: theme('colors.gray.300');
+      --fc-button-text-color: theme('colors.gray.700');
+      --fc-button-hover-bg-color: theme('colors.gray.100');
+      --fc-button-hover-border-color: theme('colors.gray.400');
+      --fc-button-active-bg-color: theme('colors.primary.600');
+      --fc-button-active-border-color: theme('colors.primary.600');
+      --fc-event-bg-color: theme('colors.primary.600');
+      --fc-event-border-color: theme('colors.primary.600');
+      --fc-today-bg-color: theme('colors.primary.50');
+    }
+
+    .fc .fc-button {
+      @apply text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500;
+    }
+
+    .fc .fc-button-primary:not(:disabled).fc-button-active,
+    .fc .fc-button-primary:not(:disabled):active {
+      @apply bg-primary-600 border-primary-600 text-white;
+    }
+
+    .fc .fc-daygrid-day.fc-day-today {
+      @apply bg-primary-50;
+    }
+
+    .fc-event {
+      @apply cursor-pointer transition-opacity duration-150 ease-in-out;
+    }
+
+    .fc-event:hover {
+      @apply opacity-90;
+    }
+
+    .fc-toolbar-title {
+      @apply text-lg font-medium text-gray-900;
+    }
+
+    @media (max-width: 640px) {
+      .fc-toolbar {
+        @apply flex-col space-y-4;
+      }
+
+      .fc-toolbar-title {
+        @apply text-base;
+      }
+    }
+  </style>
+<% end %>
