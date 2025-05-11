@@ -1,8 +1,131 @@
-<h1>All Groups</h1>
-<ul>
-  <% @groups.each do |group| %>
-    <li><%= link_to group.name, course_group_path(group.course, group) %></li>
-  <% end %>
-</ul>
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Course Groups</h1>
+          <p class="mt-1 text-sm text-gray-500">
+            Manage your study groups and sessions
+          </p>
+        </div>
+        <%= link_to new_course_group_path(current_course), 
+            class: "inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors duration-150" do %>
+          <i class="fas fa-users-class mr-2"></i>
+          Create New Group
+        <% end %>
+      </div>
+    </div>
 
-<%= link_to 'Add Group', new_course_group_path(current_course) %>
+    <!-- Groups Grid -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @groups.each do |group| %>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-150">
+          <!-- Group Header -->
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center">
+                    <i class="fas fa-users text-primary-600"></i>
+                  </div>
+                </div>
+                <div>
+                  <h2 class="text-lg font-medium text-gray-900"><%= group.name %></h2>
+                  <p class="text-sm text-gray-500">
+                    <%= group.course.title %>
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <%= link_to edit_course_group_path(group.course, group), 
+                    class: "text-gray-400 hover:text-primary-600 transition-colors duration-150",
+                    title: "Edit group" do %>
+                  <i class="fas fa-edit"></i>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Group Stats -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="bg-gray-50 rounded-lg p-3">
+                <div class="flex items-center">
+                  <i class="fas fa-user-graduate text-gray-400 mr-2"></i>
+                  <div>
+                    <p class="text-xs text-gray-500">Students</p>
+                    <p class="text-sm font-medium text-gray-900"><%= group.students.count %></p>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-gray-50 rounded-lg p-3">
+                <div class="flex items-center">
+                  <i class="fas fa-clock text-gray-400 mr-2"></i>
+                  <div>
+                    <p class="text-xs text-gray-500">Sessions</p>
+                    <p class="text-sm font-medium text-gray-900"><%= group.sessions.count %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Next Session -->
+            <% if group.next_session.present? %>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                <h3 class="text-sm font-medium text-gray-900 mb-2">Next Session</h3>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center text-sm text-gray-500">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <%= group.next_session.start_time.strftime("%b %d, %I:%M %p") %>
+                  </div>
+                  <%= link_to "Join", group.next_session.url, 
+                      class: "inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-primary-600 bg-primary-100 hover:bg-primary-200 transition-colors duration-150" %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Group Actions -->
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+              <%= link_to course_group_path(group.course, group), 
+                  class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-150" do %>
+                <i class="fas fa-eye mr-2"></i>
+                View Details
+              <% end %>
+
+              <div class="flex items-center space-x-2 text-sm text-gray-500">
+                <i class="fas fa-clock"></i>
+                <span>Updated <%= time_ago_in_words(group.updated_at) %> ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Empty State -->
+      <% if @groups.empty? %>
+        <div class="col-span-full">
+          <div class="text-center py-12 bg-white rounded-lg border border-gray-100">
+            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mx-auto">
+              <i class="fas fa-users text-primary-600 text-xl"></i>
+            </div>
+            <h3 class="mt-4 text-sm font-medium text-gray-900">No groups yet</h3>
+            <p class="mt-1 text-sm text-gray-500">
+              Get started by creating your first study group
+            </p>
+            <%= link_to new_course_group_path(current_course), 
+                class: "mt-6 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-150" do %>
+              <i class="fas fa-plus mr-2"></i>
+              Create New Group
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Pagination -->
+    <% if @groups.respond_to?(:total_pages) && @groups.total_pages > 1 %>
+      <div class="mt-8">
+        <%= paginate @groups, theme: 'tailwind' %>
+      </div>
+    <% end %>
+  </div>
+</div>
