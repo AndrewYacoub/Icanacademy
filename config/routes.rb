@@ -18,6 +18,27 @@ Rails.application.routes.draw do
       resources :session_modifications, only: [:create]
       post 'enroll', on: :member
     end
+    resources :payments, only: [:new, :create]
+  end
+
+  resources :payments, only: [:index, :show] do
+    member do
+      get :receipt
+    end
+  end
+
+  # Stripe integration
+  namespace :webhooks do
+    post 'stripe', to: 'stripe#create'
+  end
+
+  # Stripe account management for teachers
+  resources :stripe_accounts, only: [:new] do
+    collection do
+      get :refresh
+      get :return
+      get :status
+    end
   end
   
   resources :groups, only: [:index]

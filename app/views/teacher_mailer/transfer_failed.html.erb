@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #fff3f3;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #dc3545;
+    }
+    .details {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+    }
+    .amount {
+      font-size: 24px;
+      color: #333;
+      font-weight: bold;
+    }
+    .error-box {
+      background-color: #fff3f3;
+      border: 1px solid #dc3545;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+      color: #dc3545;
+    }
+    .footer {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+      font-size: 14px;
+      color: #6c757d;
+    }
+    .support-box {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+    .action-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #0d6efd;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Payment Transfer Failed</h1>
+    <p>Dear <%= @teacher.first_name %>,</p>
+    <p>We encountered an issue while trying to transfer your payment.</p>
+  </div>
+
+  <div class="details">
+    <h2>Transfer Details</h2>
+    <p>Course: <strong><%= @course.title %></strong></p>
+    <p>Attempted Transfer Amount: <span class="amount">$<%= number_with_precision(@amount, precision: 2) %></span></p>
+    <p>Attempt Date: <%= @payment.updated_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+
+    <div class="error-box">
+      <h3 style="margin-top: 0;">Error Details</h3>
+      <p><%= @error || "There was an issue processing the transfer. Our team has been notified and is working to resolve this." %></p>
+    </div>
+
+    <div class="support-box">
+      <h3 style="margin-top: 0;">Next Steps</h3>
+      <ul style="margin-bottom: 0;">
+        <li>Our support team has been notified and will investigate the issue</li>
+        <li>We will attempt the transfer again automatically within 24 hours</li>
+        <li>Please ensure your Stripe account details are up to date</li>
+        <li>Contact support if you need to update your payment information</li>
+      </ul>
+    </div>
+
+    <%= link_to "View Payment Details", payment_url(@payment), class: "action-button" %>
+  </div>
+
+  <div class="footer">
+    <p>If you need immediate assistance or have questions about this failed transfer, please contact our support team.</p>
+    <p>We apologize for any inconvenience this may have caused.</p>
+    <p>Reference ID: <%= @payment.stripe_transfer_id || "N/A" %></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<%# Error Messages %>
+<% if flash[:error] || flash[:alert] %>
+  <div class="payment-error" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div>
+      <%= flash[:error] || flash[:alert] %>
+    </div>
+  </div>
+<% end %>
+
+<%# Success Messages %>
+<% if flash[:success] || flash[:notice] %>
+  <div class="payment-success" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <div>
+      <%= flash[:success] || flash[:notice] %>
+    </div>
+  </div>
+<% end %>
+
+<%# Form Errors %>
+<% if local_assigns[:resource]&.errors&.any? %>
+  <div class="payment-error" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div>
+      <h3 class="font-medium">
+        <%= pluralize(resource.errors.count, "error") %> prevented this payment from being processed:
+      </h3>
+      <ul class="mt-2 list-disc list-inside">
+        <% resource.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<%# Stripe Card Errors %>
+<div id="card-errors" class="payment-error hidden" role="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <div></div>
+</div>
+
+<%# Processing Message %>
+<div id="processing-message" class="payment-success hidden" role="alert">
+  <div class="spinner mr-2"></div>
+  <div>Processing your payment...</div>
+</div>
+
+<%# Success Message %>
+<div id="success-message" class="payment-success hidden" role="alert">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+  </svg>
+  <div>Payment successful! Redirecting...</div>
+</div>

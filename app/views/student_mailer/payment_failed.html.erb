@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #fff3f3;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #dc3545;
+    }
+    .details {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+    }
+    .error {
+      color: #dc3545;
+      font-weight: bold;
+    }
+    .action-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #0d6efd;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .footer {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Payment Failed</h1>
+    <p>Dear <%= @student.first_name %>,</p>
+    <p>We were unable to process your payment for the following course:</p>
+  </div>
+
+  <div class="details">
+    <h2>Payment Details</h2>
+    <p>Course: <strong><%= @course.title %></strong></p>
+    <p>Amount: <strong>$<%= number_with_precision(@payment.amount, precision: 2) %></strong></p>
+    <% if @payment.error_message.present? %>
+      <p class="error">Reason: <%= @payment.error_message %></p>
+    <% end %>
+    
+    <h3>What to do next:</h3>
+    <ul>
+      <li>Check that your card details are correct</li>
+      <li>Ensure you have sufficient funds available</li>
+      <li>Try using a different payment method</li>
+    </ul>
+
+    <%= link_to "Try Payment Again", new_course_payment_url(@course), class: "action-button" %>
+  </div>
+
+  <div class="footer">
+    <p>If you continue to experience issues or need assistance, please don't hesitate to contact our support team.</p>
+    <p>We're here to help!</p>
+  </div>
+</body>
+</html>

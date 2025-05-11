@@ -1,0 +1,92 @@
+<% content_for :head do %>
+  <%= render 'shared/payment_head' %>
+<% end %>
+
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <!-- Payment Form -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="px-6 py-5 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Course Payment</h1>
+          </div>
+
+          <%= form_with(model: [@course, @payment], id: 'payment-form', class: 'p-6 space-y-6') do |f| %>
+            <%= render 'shared/payment_messages', resource: @payment %>
+
+            <%= f.hidden_field :course_id, value: @course.id %>
+            <%= f.hidden_field :amount, value: @course.price %>
+
+            <!-- Card Holder Name -->
+            <div>
+              <label for="card_holder_name" class="block text-sm font-medium text-gray-700 mb-2">
+                Card Holder Name
+              </label>
+              <input type="text" id="card_holder_name" name="card_holder_name" 
+                     class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                     value="<%= current_user.full_name %>"
+                     required>
+            </div>
+
+            <!-- Card Element -->
+            <div>
+              <label for="card-element" class="block text-sm font-medium text-gray-700 mb-2">
+                Credit or Debit Card
+              </label>
+              <div class="card-input-container">
+                <div id="card-element" class="p-3">
+                  <!-- Stripe Card Element will be inserted here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-6">
+              <button type="submit" class="w-full flex justify-center items-center px-4 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <span class="spinner hidden"></span>
+                <span class="button-text">Pay $<%= number_with_precision(@course.price, precision: 2) %></span>
+              </button>
+            </div>
+          <% end %>
+
+        </div>
+
+        <!-- Security Information -->
+        <div class="mt-6">
+          <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Secure Payment</h2>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-gray-900">Secure Transaction</h3>
+                  <p class="text-sm text-gray-500">Your payment information is encrypted and secure.</p>
+                </div>
+              </div>
+              <div class="flex items-start">
+                <svg class="h-6 w-6 text-green-500 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-gray-900">Money-Back Guarantee</h3>
+                  <p class="text-sm text-gray-500">Not satisfied? Get a full refund within 30 days.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="lg:col-span-1">
+        <%= render 'shared/payment_summary', 
+                   course: @course, 
+                   show_breakdown: true, 
+                   show_refund_policy: true %>
+      </div>
+    </div>
+  </div>
+</div>

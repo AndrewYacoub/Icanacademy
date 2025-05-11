@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.3.0"
+ruby "3.2.3"
 gem 'ice_cube'
 gem 'google-apis-forms_v1', '~> 0.3.0'
 gem 'google-api-client', '~> 0.53.0'
@@ -21,6 +21,19 @@ gem 'flatpickr'
 gem 'figaro'
 gem "mysql2"
 gem "puma_worker_killer"
+
+# Payment Processing
+gem "stripe"
+gem "money-rails"
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+
+# Enhanced File Upload & Storage
+gem "aws-sdk-s3", require: false
+gem "image_processing", "~> 1.2"
+
+# UI/Frontend
+gem "tailwindcss-rails"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"

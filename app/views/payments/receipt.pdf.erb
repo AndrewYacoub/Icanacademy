@@ -1,0 +1,17 @@
+<%# This view is used for generating PDF receipts %>
+<%= render 'receipt', payment: @payment, pdf: true %>
+
+<%# Add a footer with page numbers %>
+<div style="position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 10px; color: #6B7280; padding: 1rem;">
+  <div style="border-top: 1px solid #E5E7EB; padding-top: 0.5rem;">
+    Page <span class="page"></span> of <span class="topage"></span>
+  </div>
+</div>
+
+<%# Add a watermark for copies %>
+<% if @copy %>
+  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); 
+              font-size: 144px; color: rgba(107, 114, 128, 0.1); text-transform: uppercase;">
+    Copy
+  </div>
+<% end %>

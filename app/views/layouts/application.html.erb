@@ -1,246 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-gray-50">
 <head>
   <title>ICAN Academy</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta content="Hogo– Creative Admin Multipurpose Responsive Bootstrap4 Dashboard HTML Template" name="description">
-  <meta content="Spruko Technologies Private Limited" name="author">
-  <meta name="keywords" content="html admin template, bootstrap admin template premium, premium responsive admin template, admin dashboard template bootstrap, bootstrap simple admin template premium, web admin template, bootstrap admin template, premium admin template html5, best bootstrap admin template, premium admin panel template, admin template" />
-
+  <meta name="description" content="ICAN Academy - Online Learning Platform">
+  
   <!-- Favicon -->
   <link rel="icon" href="assets/brand/icanacademy.png" type="image/x-icon" />
   <link rel="shortcut icon" type="image/x-icon" href="assets/brand/icanacademy.png" />
 
-  <!-- Bootstrap.min css -->
-  <%= stylesheet_link_tag "application.css" %>
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Tailwind CSS -->
+  <%= stylesheet_link_tag "application.tailwind", "data-turbo-track": "reload" %>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Custom Styles -->
+  <!-- Custom Styles for Messages -->
   <style>
-    html, body {
-      height: 100vh;
-    }
-
     <%= ".msg-#{current_user&.id}" %> {
-      background-color: #007bff !important;
-      padding: 10px;
+      @apply bg-blue-600 p-2.5;
     }
-
     <%= ".cont-#{current_user&.id}" %> {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .navbar-item {
-      font-family: sans-serif;
-      font-size: larger;
-      color: black;
-      font-weight: 500;
-    }
-
-    .footer a.text-white-50:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      height: -webkit-fill-available;
-      margin-top: 15%;
-    }
-
-    .navbar-sidebar-items {
-      display: none;
-    }
-
-.sidebar-items {
-      display: block;
-    }
-
-    @media (max-width: 768px) {
-      .navbar-sidebar-items {
-        display: block;
-      }
-      .sidebar-items {
-      display: none;
-    }
+      @apply flex justify-end;
     }
   </style>
 </head>
 
-<body>
-  <div class="page">
-    <div class="page-main">
-      <!--app-header-->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light app-header header">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-            <%= image_tag("brand/icanacademy.png", class: "header-brand-img main-logo", style: "width:100px") %>
-          </a>
-          <% if current_user %>
-            <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-toggle="sidebar" href="#"></a>
-          <% end %>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav ml-auto">
-              <% unless current_user %>
-                <li class="nav-item">
-                  <a class="nav-link mr-3 navbar-item" href="#contact">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mr-3 navbar-item" href="#activities">Activities</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mr-3 navbar-item" href="#about">About Us</a>
-                </li>
-                <li class="nav-item">
-                  <a class="btn btn-primary mr-3" href=<%= join_now_home_index_path %>><i class="fe fe-plus mr-1"></i>Join Now</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link navbar-item mr-3" href="/users/sign_in">Login</a>
-                </li>
-              <% else %>
-                <li class="nav-item">
-                  <%= button_to "Log out", destroy_user_session_path, method: :delete, class: 'btn btn-success navbar-item' %>
-                </li>
-                <div class="navbar-sidebar-items">
-                <li class="nav-item ">
-                  <a class="nav-link mr-3 navbar-item" href=<%= dashboards_path %>>Dashboard</a>
-                </li>
-
-                <% if current_user.type == "Teacher" %>
-                  <li class="nav-item">
-                    <a class="nav-link mr-3 navbar-item" href=<%= courses_path %>>My Courses</a>
-                  </li>
-                <% end %>
-
-                <% if current_user.type == "Student" %>
-                  <li class="nav-item">
-                    <a class="nav-link mr-3 navbar-item" href=<%= student_groups_enrolled_path %>>Enrolled Groups</a>
-                  </li>
-                  <li class="nav-item ">
-                    <a class="nav-link mr-3 navbar-item" href=<%= search_teachers_path %>>Search Teachers</a>
-                  </li>
-                <% end %>
-
-                <% if current_user.type == "Teacher" %>
-                  <li class="nav-item">
-                    <a class="nav-link mr-3 navbar-item" href=<%= teacher_pending_enrollments_path %>> Pending Enrollments</a>
-                  </li>
-                <% end %>
-                
-                <li class="nav-item">
-                  <a class="nav-link mr-3 navbar-item" href=<%= profile_path(current_user.id) %>>Profile Settings</a>
-                </li>
-                </div>
+<body class="h-full">
+  <div class="min-h-screen bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <%= link_to root_path do %>
+                <%= image_tag("brand/icanacademy.png", class: "h-8 w-auto") %>
               <% end %>
+            </div>
+            <% if current_user %>
+              <button class="md:hidden ml-4 text-gray-500 hover:text-gray-700 focus:outline-none" 
+                      data-toggle="sidebar" 
+                      aria-label="Toggle sidebar">
+                <i class="fas fa-bars text-xl"></i>
+              </button>
+            <% end %>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex md:items-center md:space-x-6">
+            <% unless current_user %>
+              <%= link_to "Contact Us", "#contact", class: "text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium" %>
+              <%= link_to "Activities", "#activities", class: "text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium" %>
+              <%= link_to "About Us", "#about", class: "text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium" %>
+              <%= link_to join_now_home_index_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" do %>
+                <i class="fas fa-plus mr-2"></i>Join Now
+              <% end %>
+              <%= link_to "Login", "/users/sign_in", class: "text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium" %>
+            <% else %>
+              <%= button_to destroy_user_session_path, 
+                          method: :delete, 
+                          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+                <i class="fas fa-sign-out-alt mr-2"></i>Log out
+              <% end %>
+            <% end %>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="flex items-center md:hidden">
+            <button type="button" 
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" 
+                    aria-controls="mobile-menu" 
+                    aria-expanded="false"
+                    data-toggle="collapse" 
+                    data-target="#mobile-menu">
+              <span class="sr-only">Open main menu</span>
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="md:hidden" id="mobile-menu">
+        <div class="pt-2 pb-3 space-y-1">
+          <% unless current_user %>
+            <%= link_to "Contact Us", "#contact", class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+            <%= link_to "Activities", "#activities", class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+            <%= link_to "About Us", "#about", class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+          <% else %>
+            <%= link_to "Dashboard", dashboards_path, class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+            
+            <% if current_user.type == "Teacher" %>
+              <%= link_to "My Courses", courses_path, class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+              <%= link_to "Pending Enrollments", teacher_pending_enrollments_path, class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+            <% end %>
+
+            <% if current_user.type == "Student" %>
+              <%= link_to "Enrolled Groups", student_groups_enrolled_path, class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+              <%= link_to "Search Teachers", search_teachers_path, class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+            <% end %>
+
+            <%= link_to "Profile Settings", profile_path(current_user.id), class: "block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <% if current_user %>
+      <div class="sidebar-items hidden md:block">
+        <%= render "layouts/sidebar" %>
+      </div>
+    <% end %>
+
+    <!-- Main Content -->
+    <main class="<%= current_user ? 'md:ml-64' : '' %> px-4 sm:px-6 lg:px-8 py-8">
+      <div class="max-w-7xl mx-auto">
+        <%= yield %>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Quick Links -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul class="space-y-2">
+              <li><%= link_to "About Us", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Contact Us", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Privacy Policy", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Terms & Conditions", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "FAQs & Help", "#", class: "text-gray-400 hover:text-white transition" %></li>
+            </ul>
+          </div>
+
+          <!-- Contact Info -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Contact</h4>
+            <div class="space-y-3">
+              <p class="flex items-center text-gray-400">
+                <i class="fas fa-map-marker-alt w-5 text-gray-500"></i>
+                123 Street, New York, USA
+              </p>
+              <p class="flex items-center text-gray-400">
+                <i class="fas fa-phone-alt w-5 text-gray-500"></i>
+                +012 345 67890
+              </p>
+              <p class="flex items-center text-gray-400">
+                <i class="fas fa-envelope w-5 text-gray-500"></i>
+                info@example.com
+              </p>
+            </div>
+            <div class="mt-4 flex space-x-3">
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a href="#" class="text-gray-400 hover:text-white transition">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Gallery -->
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Gallery</h4>
+            <div class="grid grid-cols-3 gap-2">
+              <%= image_tag("brand/course-1.jpg", class: "rounded-lg object-cover w-full h-24", alt: "Course 1") %>
+              <%= image_tag("brand/course-2.jpg", class: "rounded-lg object-cover w-full h-24", alt: "Course 2") %>
+              <%= image_tag("brand/course-3.jpg", class: "rounded-lg object-cover w-full h-24", alt: "Course 3") %>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-8 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="text-center md:text-left text-gray-400 mb-4 md:mb-0">
+              &copy; 2024 <a href="#" class="hover:text-white">ICAN Academy</a>. All rights reserved.
+            </div>
+            <ul class="flex space-x-4">
+              <li><%= link_to "Home", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Cookies", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Help", "#", class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "FAQs", "#", class: "text-gray-400 hover:text-white transition" %></li>
             </ul>
           </div>
         </div>
-      </nav>
-      <!--app-header end-->
-
-      <!-- Sidebar menu-->
-      <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-      <% if current_user %>
-      <div class="sidebar-items">
-        <%= render "layouts/sidebar" %>
       </div>
-      <% end %>
-      <!--sidemenu end-->
+    </footer>
 
-      <!-- app-content-->
-      <% if current_user %>
-        <div class="app-content my-3 my-md-5 toggle-content">
-      <% else %>
-        <div class="my-3 my-md-5">
-      <% end %>
-          <div class="side-app">
-            <%= yield %>
-          </div>
-          
-          <!-- Right-sidebar-->
-          <!-- Footer Start -->
-          <div class="container-fluid bg-dark text-white footer py-5">
-            <div class="container">
-              <div class="row g-4">
-                <div class="col-lg-3 col-md-6">
-                  <h4 class="text-white mb-3">Quick Link</h4>
-                  <ul class="list-unstyled">
-                    <li><a href="#" class="text-white-50">About Us</a></li>
-                    <li><a href="#" class="text-white-50">Contact Us</a></li>
-                    <li><a href="#" class="text-white-50">Privacy Policy</a></li>
-                    <li><a href="#" class="text-white-50">Terms & Condition</a></li>
-                    <li><a href="#" class="text-white-50">FAQs & Help</a></li>
-                  </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <h4 class="text-white mb-3">Contact</h4>
-                  <p><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                  <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                  <p><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                  <div class="pt-2">
-                    <a href="#" class="btn btn-outline-light btn-sm me-1"><i class="fa fa-twitter"></i></a>
-                    <a href="#" class="btn btn-outline-light btn-sm me-1"><i class="fa fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-outline-light btn-sm me-1"><i class="fa fa-youtube"></i></a>
-                    <a href="#" class="btn btn-outline-light btn-sm"><i class="fa fa-linkedin"></i></a>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                  <h4 class="text-white mb-3">Gallery</h4>
-                  <div class="row gx-2">
-                    <div class="col-4">
-                      <%= image_tag("brand/course-1.jpg", class: "img-fluid bg-light p-1", alt: "") %>
-                    </div>
-                    <div class="col-4">
-                      <%= image_tag("brand/course-2.jpg", class: "img-fluid bg-light p-1", alt: "") %>
-                    </div>
-                    <div class="col-4">
-                      <%= image_tag("brand/course-3.jpg", class: "img-fluid bg-light p-1", alt: "") %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="container mt-5">
-              <div class="row">
-                <div class="col-md-6 text-center text-md-start">
-                  &copy; 2024 <a href="#" class="text-white-50">Your Site Name</a>. All rights reserved.
-                  <br>Designed by <a href="https://htmlcodex.com" class="text-white-50">HTML Codex</a>
-                  <br>Distributed by <a href="https://themewagon.com" class="text-white-50">ThemeWagon</a>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                  <ul class="list-inline">
-                    <li class="list-inline-item"><a href="#" class="text-white-50">Home</a></li>
-                    <li class="list-inline-item"><a href="#" class="text-white-50">Cookies</a></li>
-                    <li class="list-inline-item"><a href="#" class="text-white-50">Help</a></li>
-                    <li class="list-inline-item"><a href="#" class="text-white-50">FQAs</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Footer End -->
-        </div>
-        <!-- End app-content-->
-      </div>
-    </div>
-    <a href="#top" id="back-to-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
+    <!-- Back to top button -->
+    <button id="back-to-top" 
+            class="fixed bottom-4 right-4 bg-primary-600 text-white p-3 rounded-full shadow-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-opacity opacity-0">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
 
-    <!-- JavaScript files -->
-    <%= javascript_include_tag "application" %>
-    <%= javascript_importmap_tags %>
-    <%= javascript_include_tag "jquery-3.2.1.min.js", "popper.min.js", "bootstrap.min.js" %>
-    <%= javascript_include_tag "jquery.sparkline.min.js", "circle-progress.min.js", "jquery.rating-stars.js" %>
-    <%= javascript_include_tag "moment.min.js", "daterangepicker.js", "sidemenu.js" %>
-    <%= javascript_include_tag "easyResponsiveTabs.js", "jquery.mCustomScrollbar.concat.min.js", "owl.carousel.js" %>
-    <%= javascript_include_tag "owl-main.js", "sidebar.js", "utils.js" %>
-    <%= javascript_include_tag "jquery.missofis-countdown.js", "counter.js", "raphael-min.js" %>
-    <%= javascript_include_tag "morris.js", "index1.js", "custom.js" %>
-  </body>
+  <!-- JavaScript -->
+  <%= javascript_include_tag "application" %>
+  <%= javascript_importmap_tags %>
+</body>
 </html>

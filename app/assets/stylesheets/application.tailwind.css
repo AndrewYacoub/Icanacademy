@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that need to be preserved */
+@layer components {
+  .msg-form {
+    @apply w-full h-14 p-2.5;
+  }
+
+  #single_room {
+    @apply h-[calc(100vh-150px)];
+  }
+
+  #messages {
+    @apply h-[calc(100vh-150px)] overflow-x-hidden overflow-y-scroll;
+  }
+
+  #room_container {
+    @apply h-screen mr-0;
+  }
+
+  #side_panel {
+    @apply h-[calc(100vh-55px)] mr-0 overflow-x-hidden overflow-y-scroll mb-14;
+  }
+
+  #chatroom_container {
+    @apply h-screen mr-0 overflow-x-hidden overflow-y-hidden;
+  }
+
+  .msg-content {
+    @apply w-4/5 mr-1.5;
+  }
+
+  .message-box {
+    @apply break-words w-fit max-w-[40%] p-2.5 rounded-lg mb-2.5 bg-gray-600;
+  }
+
+  .user_row {
+    @apply h-12 p-2.5 border-b border-gray-600;
+  }
+
+  .username {
+    @apply overflow-hidden;
+  }
+
+  .chat_pfp {
+    @apply w-10 h-10 rounded-full mr-2.5;
+  }
+
+  .user_list_item {
+    @apply h-14 bg-gray-800;
+  }
+
+  .room_list_item {
+    @apply h-14 bg-gray-800;
+  }
+}
+
+/* Custom components */
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 ease-in-out;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-150 ease-in-out;
+  }
+
+  .form-input {
+    @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  .nav-link {
+    @apply text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium;
+  }
+
+  .nav-link-active {
+    @apply text-primary-600 hover:text-primary-700;
+  }
+
+  .sidebar-link {
+    @apply flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-150;
+  }
+
+  .sidebar-link-active {
+    @apply bg-primary-50 text-primary-600;
+  }
+}
+
+/* Font imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');

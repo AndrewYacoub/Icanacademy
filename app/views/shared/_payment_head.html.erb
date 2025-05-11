@@ -1,0 +1,160 @@
+<%# Meta tags for Stripe integration %>
+<meta name="stripe-publishable-key" content="<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>" data-stripe-publishable-key />
+
+<%# Stripe.js %>
+<%= javascript_include_tag "https://js.stripe.com/v3/", "data-turbo-track": "reload" %>
+
+<%# Custom styles for Stripe Elements %>
+<style>
+  .StripeElement {
+    background-color: white;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .StripeElement--focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 1px #4f46e5;
+  }
+
+  .StripeElement--invalid {
+    border-color: #dc2626;
+  }
+
+  .StripeElement--webkit-autofill {
+    background-color: #fefde5 !important;
+  }
+
+  /* Loading spinner animation */
+  @keyframes spinner {
+    to {transform: rotate(360deg);}
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #e5e7eb;
+    border-top-color: #4f46e5;
+    border-radius: 50%;
+    animation: spinner .6s linear infinite;
+  }
+
+  /* Error message styles */
+  .payment-error {
+    color: #dc2626;
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .payment-error svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Success message styles */
+  .payment-success {
+    color: #047857;
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .payment-success svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Card input container */
+  .card-input-container {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 1px;
+    background-color: white;
+    transition: all 0.2s ease;
+  }
+
+  .card-input-container:hover {
+    border-color: #cbd5e1;
+  }
+
+  .card-input-container.focused {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 1px #4f46e5;
+  }
+
+  .card-input-container.invalid {
+    border-color: #dc2626;
+  }
+
+  /* Payment form section styles */
+  .payment-section {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .payment-section-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+
+  .payment-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  /* Payment summary styles */
+  .payment-summary {
+    background-color: #f8fafc;
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  .payment-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .payment-summary-label {
+    color: #64748b;
+  }
+
+  .payment-summary-value {
+    font-weight: 500;
+    color: #0f172a;
+  }
+
+  .payment-summary-total {
+    border-top: 1px solid #e2e8f0;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .payment-summary-total .payment-summary-label,
+  .payment-summary-total .payment-summary-value {
+    font-weight: 600;
+    color: #0f172a;
+  }
+</style>
