@@ -1,70 +1,165 @@
-<div class="msb-reply d-flex align-items-center">
-  <%= form_with(model: [@single_room, @message], remote: true, class: "d-flex align-items-center w-100", 
-     data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
-
-    <!-- Reduced width for the text field -->
-    <%= f.text_field :content, id: 'chat-text', class: "form-control bg-white", placeholder: "Typing...", autocomplete: 'off', style: "width: 70%;" %>
+<div class="relative">
+  <%= form_with(model: [@single_room, @message], 
+                remote: true,
+                class: "flex items-center space-x-2", 
+                data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
     
-    <!-- Voice Recording Button without background -->
-    <button type="button" id="record-button" class="btn btn-secondary ml-2 d-flex justify-content-center align-items-center" 
-            style="width: 40px; height: 40px; border-radius: 50%; padding: 0;">
-      <i class="fa fa-microphone"></i>
-    </button>
-    
-    <!-- Hidden Input to Store Audio Blob -->
-    <%= f.hidden_field :audio, id: "audio-data", value: "" %>
-    
-    <!-- File Upload Icon without background -->
-    <div class="input-group-prepend">
-      <label for="file-upload" class="input-group-text bg-transparent border-0 p-0 ml-2">
-        <i class="fa fa-paperclip"></i>
-      </label>
-      <%= f.file_field :file, id: "file-upload", class: "d-none" %>
+    <!-- Message Input -->
+    <div class="flex-1 relative">
+      <%= f.text_field :content,
+          id: 'chat-text',
+          class: "w-full pl-4 pr-12 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent",
+          placeholder: "Type your message...",
+          autocomplete: 'off' %>
     </div>
-    
+
+    <!-- Attachment Button -->
+    <div class="flex-shrink-0">
+      <label for="file-upload" 
+             class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-150 cursor-pointer">
+        <i class="fas fa-paperclip text-gray-600"></i>
+      </label>
+      <%= f.file_field :file, 
+          id: "file-upload", 
+          class: "hidden",
+          data: { 
+            action: "change->message#previewFile"
+          } %>
+    </div>
+
+    <!-- Voice Recording Button -->
+    <div class="flex-shrink-0">
+      <button type="button" 
+              id="record-button"
+              class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-150">
+        <i class="fas fa-microphone text-gray-600"></i>
+      </button>
+      <%= f.hidden_field :audio, id: "audio-data" %>
+    </div>
+
     <!-- Send Button -->
-    <%= f.submit "Send", class: "btn btn-primary ml-2", data: { disable_with: false } %>
-    
+    <div class="flex-shrink-0">
+      <%= button_tag type: 'submit',
+          class: "inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary-600 hover:bg-primary-700 transition-colors duration-150",
+          data: { disable_with: false } do %>
+        <i class="fas fa-paper-plane text-white"></i>
+      <% end %>
+    </div>
   <% end %>
+
+  <!-- File Preview Container -->
+  <div id="file-preview" class="hidden absolute bottom-full left-0 w-full p-2 bg-white rounded-lg shadow-lg border border-gray-200 mb-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-file text-primary-600"></i>
+        <span class="text-sm text-gray-600 truncate" id="file-name"></span>
+      </div>
+      <button type="button" 
+              class="text-gray-400 hover:text-gray-600"
+              onclick="removeFile()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Recording Indicator -->
+  <div id="recording-indicator" class="hidden absolute bottom-full left-0 w-full p-2 bg-white rounded-lg shadow-lg border border-gray-200 mb-2">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+        <span class="text-sm text-gray-600">Recording...</span>
+      </div>
+      <span class="text-sm text-gray-400" id="recording-time">00:00</span>
+    </div>
+  </div>
 </div>
 
-
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
   let recordButton = document.getElementById("record-button");
   let audioInput = document.getElementById("audio-data");
+  let recordingIndicator = document.getElementById("recording-indicator");
+  let recordingTime = document.getElementById("recording-time");
   let mediaRecorder;
   let audioChunks = [];
+  let startTime;
+  let timerInterval;
 
+  // File preview functionality
+  const fileInput = document.getElementById('file-upload');
+  const filePreview = document.getElementById('file-preview');
+  const fileName = document.getElementById('file-name');
+
+  fileInput.addEventListener('change', function() {
+    if (this.files && this.files[0]) {
+      fileName.textContent = this.files[0].name;
+      filePreview.classList.remove('hidden');
+    }
+  });
+
+  window.removeFile = function() {
+    fileInput.value = '';
+    filePreview.classList.add('hidden');
+  };
+
+  // Recording functionality
   if (recordButton) {
     recordButton.addEventListener("click", async function() {
       if (!mediaRecorder || mediaRecorder.state === "inactive") {
-        audioChunks = [];
-        let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
-        
-        mediaRecorder.start();
+        try {
+          audioChunks = [];
+          let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          
+          mediaRecorder.start();
+          startRecording();
 
-        mediaRecorder.addEventListener("dataavailable", function(event) {
-          audioChunks.push(event.data);
-        });
+          mediaRecorder.addEventListener("dataavailable", function(event) {
+            audioChunks.push(event.data);
+          });
 
-        mediaRecorder.addEventListener("stop", function() {
-          let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-          let audioUrl = URL.createObjectURL(audioBlob);
-          let reader = new FileReader();
-          reader.readAsDataURL(audioBlob);
-          reader.onloadend = function() {
-            audioInput.value = reader.result; // Store the audio data in the hidden input field
-          };
-        });
+          mediaRecorder.addEventListener("stop", function() {
+            stopRecording();
+            let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+            let reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = function() {
+              audioInput.value = reader.result;
+            };
+          });
 
-        recordButton.innerHTML = '<i class="fa fa-stop"></i>';
+          recordButton.innerHTML = '<i class="fas fa-stop text-red-600"></i>';
+          recordButton.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+          recordButton.classList.add('bg-red-100', 'hover:bg-red-200');
+        } catch (err) {
+          console.error("Error accessing microphone:", err);
+          alert("Unable to access microphone. Please check your browser permissions.");
+        }
       } else {
         mediaRecorder.stop();
-        recordButton.innerHTML = '<i class="fa fa-microphone"></i>';
+        recordButton.innerHTML = '<i class="fas fa-microphone text-gray-600"></i>';
+        recordButton.classList.remove('bg-red-100', 'hover:bg-red-200');
+        recordButton.classList.add('bg-gray-100', 'hover:bg-gray-200');
       }
     });
   }
+
+  function startRecording() {
+    recordingIndicator.classList.remove('hidden');
+    startTime = Date.now();
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function stopRecording() {
+    recordingIndicator.classList.add('hidden');
+    clearInterval(timerInterval);
+  }
+
+  function updateTimer() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+    const seconds = (elapsed % 60).toString().padStart(2, '0');
+    recordingTime.textContent = `${minutes}:${seconds}`;
+  }
 });
-  </script>
+</script>

@@ -1,20 +1,84 @@
+<% is_active = @single_room&.name == room.name %>
 
-<% is_active_class = @single_room&.name == room.name ? 'active' : '' %>
+<%= link_to course_group_room_path(room.group.course, room.group, room), 
+    class: "block #{is_active ? 'bg-primary-50 border-primary-500' : 'hover:bg-gray-50 border-transparent'} 
+           border-l-4 transition-colors duration-150" do %>
+  <div class="px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Room Icon -->
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+            <i class="fas fa-comments text-gray-500"></i>
+          </div>
+        </div>
 
-<%= link_to course_group_room_path(room.group.course, room.group, room), class: "list-group-item room_list_item #{is_active_class} d-flex justify-content-between align-items-center" do %>
-  <div class="d-flex justify-content-between w-100">
-    <span class="room-name"><%= room.name %></span>
-    <div class="d-flex align-items-center">
-      <span class="badge badge-light badge-pill mr-2"><%= room.messages.count %></span>
-        <% if current_user == @room_creator%>
+        <!-- Room Info -->
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-900 truncate">
+              <%= room.name %>
+            </p>
+            <div class="flex items-center space-x-2">
+              <!-- Message Count -->
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                         <%= is_active ? 'bg-primary-100 text-primary-800' : 'bg-gray-100 text-gray-800' %>">
+                <%= room.messages.count %>
+              </span>
 
-      <%= button_to "Delete", 
-                    course_group_room_path(room.group.course, room.group, room), 
-                    method: :delete, 
-                    class: "btn btn-danger btn-sm",
-                    data: { confirm: 'Are you sure you want to delete this room?' } %>
-      <%end%>
+              <!-- Latest Message Time -->
+              <% if room.messages.any? %>
+                <span class="text-xs text-gray-500">
+                  <%= time_ago_in_words(room.messages.last.created_at) %> ago
+                </span>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Latest Message Preview -->
+          <% if room.messages.any? %>
+            <p class="mt-1 text-sm text-gray-500 truncate">
+              <%= room.messages.last.content %>
+            </p>
+          <% else %>
+            <p class="mt-1 text-sm text-gray-500 italic">
+              No messages yet
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Delete Button (for room creator) -->
+      <% if current_user == @room_creator %>
+        <div class="ml-4 flex-shrink-0">
+          <%= button_to course_group_room_path(room.group.course, room.group, room),
+              method: :delete,
+              class: "text-gray-400 hover:text-red-600 transition-colors duration-150",
+              title: "Delete room",
+              data: { 
+                turbo_confirm: "Are you sure you want to delete this room? This action cannot be undone.",
+                turbo_method: :delete 
+              } do %>
+            <i class="fas fa-trash"></i>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Participants Preview -->
+    <div class="mt-2 flex items-center space-x-2">
+      <div class="flex -space-x-2">
+        <% room.participants.first(3).each do |participant| %>
+          <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+            <i class="fas fa-user text-xs text-gray-500"></i>
+          </div>
+        <% end %>
+      </div>
+      <% if room.participants.count > 3 %>
+        <span class="text-xs text-gray-500">
+          +<%= room.participants.count - 3 %> more
+        </span>
+      <% end %>
     </div>
   </div>
 <% end %>
-

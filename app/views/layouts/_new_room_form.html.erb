@@ -1,5 +1,63 @@
-<%= form_with(model: [@course, @group, @room], remote: true, class: "d-flex", 
-              data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" }) do |f| %>
-  <%= f.text_field :name, class: "form-control", placeholder: "New Room Name", autocomplete: 'off' %>
-  <%= f.submit "Create", class: "btn btn-primary ml-2", data: { disable_with: false } %>
+<div class="p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+  <div class="mb-4">
+    <h3 class="text-lg font-medium text-gray-900">Create New Room</h3>
+    <p class="mt-1 text-sm text-gray-500">
+      Start a new discussion room for your group
+    </p>
+  </div>
+
+  <%= form_with(model: [@course, @group, @room], 
+                remote: true,
+                class: "space-y-4", 
+                data: { 
+                  controller: "reset-form", 
+                  action: "turbo:submit-end->reset-form#reset"
+                }) do |f| %>
+    
+    <div>
+      <label for="room_name" class="block text-sm font-medium text-gray-700">Room Name</label>
+      <div class="mt-1 relative rounded-md shadow-sm">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-comments text-gray-400"></i>
+        </div>
+        <%= f.text_field :name, 
+            class: "block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 sm:text-sm",
+            placeholder: "Enter room name...",
+            autocomplete: 'off' %>
+      </div>
+      <p class="mt-2 text-xs text-gray-500">
+        Choose a descriptive name for your discussion room
+      </p>
+    </div>
+
+    <div class="flex items-center justify-between pt-4">
+      <button type="button" 
+              class="text-sm text-gray-500 hover:text-gray-700"
+              data-bs-dismiss="modal">
+        Cancel
+      </button>
+      <%= f.button type: "submit",
+          class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-150",
+          data: { disable_with: false } do %>
+        <i class="fas fa-plus mr-2"></i>
+        Create Room
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :styles do %>
+  <style>
+    /* Custom focus styles */
+    .focus\:ring-primary-500:focus {
+      --tw-ring-opacity: 1;
+      --tw-ring-color: rgba(79, 70, 229, var(--tw-ring-opacity));
+      box-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    }
+
+    .focus\:border-primary-500:focus {
+      --tw-border-opacity: 1;
+      border-color: rgba(79, 70, 229, var(--tw-border-opacity));
+    }
+  </style>
 <% end %>

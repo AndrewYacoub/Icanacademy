@@ -1,9 +1,82 @@
-<% if @single_room && @single_room.participant?(@single_room, user) %>
-  <% isActive =  'active' %>
-<% else %>
-  <% isActive = '' %>
+<% is_active = @single_room && @single_room.participant?(@single_room, user) %>
+
+<%= link_to user, 
+    class: "block #{is_active ? 'bg-primary-50' : 'hover:bg-gray-50'} 
+           transition-colors duration-150 rounded-lg" do %>
+  <div class="p-3">
+    <div class="flex items-center space-x-3">
+      <!-- User Avatar -->
+      <div class="relative flex-shrink-0">
+        <% if user.chat_pfp.present? %>
+          <%= image_tag user.chat_pfp, 
+              class: "w-10 h-10 rounded-full object-cover" %>
+        <% else %>
+          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+            <i class="fas fa-user text-gray-500"></i>
+          </div>
+        <% end %>
+        
+        <!-- Online Status Indicator -->
+        <% if user.online? %>
+          <div class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
+        <% end %>
+      </div>
+
+      <!-- User Info -->
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-medium text-gray-900 truncate">
+            <%= user.full_name %>
+          </p>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                     <%= user_role_badge_class(user) %>">
+            <%= user.type %>
+          </span>
+        </div>
+        <p class="mt-1 text-sm text-gray-500 truncate">
+          <%= user.email %>
+        </p>
+      </div>
+
+      <!-- Status or Action Icons -->
+      <div class="flex items-center space-x-2">
+        <% if user.online? %>
+          <span class="text-xs text-green-600">Active now</span>
+        <% elsif user.last_seen_at.present? %>
+          <span class="text-xs text-gray-500">
+            <%= time_ago_in_words(user.last_seen_at) %> ago
+          </span>
+        <% end %>
+        
+        <% if @single_room&.participant?(@single_room, user) %>
+          <i class="fas fa-circle text-xs text-primary-500"></i>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Additional Info (if in a shared course/group) -->
+    <% if shared_course = current_user.shared_course_with(user) %>
+      <div class="mt-2 flex items-center text-xs text-gray-500">
+        <i class="fas fa-book mr-1"></i>
+        <span>Shared course: <%= shared_course.title %></span>
+      </div>
+    <% end %>
+  </div>
 <% end %>
-<li class="list-group-item d-flex align-items-center user_list_item <%= isActive %>">
-  <%= link_to image_tag(user.chat_pfp, class: 'chat_pfp'), user %>
-  <%= link_to user.email, user, class:'mr-auto username' %>
-</li>
+
+<% content_for :styles do %>
+  <style>
+    /* Helper method for user role badge classes */
+    <%# Define this in your helper or inline here %>
+    <% def user_role_badge_class(user) %>
+      <% case user.type %>
+      <% when 'Teacher' %>
+        bg-blue-100 text-blue-800
+      <% when 'Student' %>
+        bg-green-100 text-green-800
+      <% else %>
+        bg-gray-100 text-gray-800
+      <% end %>
+    <% end %>
+  </style>
+<% end %>

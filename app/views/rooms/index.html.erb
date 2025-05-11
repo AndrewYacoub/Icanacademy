@@ -1,216 +1,148 @@
-<style>
-  /* General styling */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-
-  .user_img, .user_img_msg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .online_icon {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: #4cd137;
-    bottom: 2px;
-    right: 2px;
-    border: 2px solid white;
-  }
-
-  .msg_cotainer, .msg_cotainer_send {
-    max-width: 60%;
-    background-color: #f1f1f1;
-    border-radius: 10px;
-    padding: 10px;
-    position: relative;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-
-  .msg_cotainer_send {
-    background-color: #007bff;
-    color: white;
-  }
-
-  .msg_time, .msg_time_send {
-    font-size: 12px;
-    position: absolute;
-    bottom: -15px;
-  }
-
-  .msg_time_send {
-    right: 0;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .msg_time {
-    left: 0;
-    color: rgba(0, 0, 0, 0.5);
-  }
-
-  .img_cont_msg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-
-  .card-body.msg_card_body {
-    overflow-y: auto;
-    height: 400px;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 0 0 10px 10px;
-  }
-
-  .card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-
-  .card-header {
-    background-color: #007bff;
-    color: white;
-    border-radius: 10px 10px 0 0;
-    padding: 15px;
-  }
-
-  .card-header .input-group {
-    border-radius: 5px;
-  }
-
-  .input-group .form-control {
-    border-radius: 0 5px 5px 0;
-  }
-
-  .chat {
-    padding: 15px;
-  }
-
-  .contacts, .rooms {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .contacts li, .rooms li {
-    margin-bottom: 10px;
-  }
-
-  .action-header {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border-radius: 10px 10px 0 0;
-  }
-
-  .action-header h4 {
-    margin: 0;
-    color: white;
-  }
-
-  .card-footer {
-    padding: 15px;
-    border-radius: 0 0 10px 10px;
-    background-color: #f8f9fa;
-  }
-
-  /* Responsive styling */
-  @media (max-width: 768px) {
-    .user_img, .user_img_msg {
-      width: 35px;
-      height: 35px;
-    }
-
-    .msg_cotainer, .msg_cotainer_send {
-      max-width: 75%;
-    }
-
-    .card-body.msg_card_body {
-      height: 300px;
-    }
-  }
-</style>
-
-<div class="row">
-  <!-- Side Panel: User List and Rooms -->
-  <div class="col-md-12 col-lg-5 col-xl-4">
-    <div class="card">
-      <div class="card-header">
-        <div class="input-group">
-          <input type="text" class="form-control bg-white" placeholder="Search users...">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-primary">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
+<div class="min-h-screen bg-gray-50">
+  <div class="container mx-auto py-6">
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Sidebar: Users and Rooms -->
+      <div class="lg:w-1/3 xl:w-1/4">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+          <!-- Search Bar -->
+          <div class="p-4 border-b border-gray-100">
+            <div class="relative">
+              <input type="text" 
+                     placeholder="Search users..." 
+                     class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+              <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="chat">
-        <ul class="contacts mb-0">
-          <%= turbo_stream_from "users" %>
-          <div id="users" class="mb-4">
-            <ul class="list-group list-group-flush">
-              <%= render @users %>
-            </ul>
-          </div>
-          <% if @group %>
-            <h2 class="card-subtitle text-dark mb-3">Rooms</h2>
-            <% unless @rooms.exists? || current_user != @room_creator %>
-              <%= render partial: "layouts/new_room_form" %>
-            <% else %>
-              <%= turbo_stream_from "rooms" %>
-              <div id="rooms">
-                <ul class="list-group list-group-flush">
-                  <%= render @rooms %>
-                </ul>
+
+          <!-- Users List -->
+          <div class="p-4">
+            <%= turbo_stream_from "users" %>
+            <div id="users" class="space-y-2">
+              <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Users</h3>
+              <ul class="space-y-2">
+                <%= render @users %>
+              </ul>
+            </div>
+
+            <!-- Rooms Section -->
+            <% if @group %>
+              <div class="mt-6">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Rooms</h3>
+                  <% if current_user == @room_creator && !@rooms.exists? %>
+                    <button data-bs-toggle="modal" 
+                            data-bs-target="#newRoomModal"
+                            class="text-sm text-primary-600 hover:text-primary-700">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  <% end %>
+                </div>
+
+                <% if !@rooms.exists? && current_user == @room_creator %>
+                  <%= render partial: "layouts/new_room_form" %>
+                <% else %>
+                  <%= turbo_stream_from "rooms" %>
+                  <div id="rooms">
+                    <ul class="space-y-2">
+                      <%= render @rooms %>
+                    </ul>
+                  </div>
+                <% end %>
               </div>
             <% end %>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Chat Area -->
-  <div class="col-md-12 col-lg-7 col-xl-8 chat">
-    <div class="card">
-      <!-- Chat Header -->
-      <div class="action-header clearfix">
-        <div class="float-left hidden-xs d-flex ml-2">
-          <div class="align-items-center mt-2">
-            <h4 class="text-white mb-0 font-weight-semibold"><%= @user&.first_name %> <%= @user&.last_name %></h4>
-            <span class="dot-label bg-success"></span><span class="mr-3 text-white">Online</span>
           </div>
         </div>
       </div>
-      
-      <!-- Chat Body -->
-      <div class="card-body msg_card_body">
-        <%= turbo_stream_from @single_room %>
-        <div id="messages" class="mb-4" data-controller="scroll">
-          <% if @messages %>
-            <%= render @messages %>
-          <% end %>
+
+      <!-- Chat Area -->
+      <div class="lg:w-2/3 xl:w-3/4">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden h-[calc(100vh-8rem)]">
+          <!-- Chat Header -->
+          <div class="px-6 py-4 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="relative">
+                  <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-user text-gray-500"></i>
+                  </div>
+                  <div class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-white"></div>
+                </div>
+                <div>
+                  <h2 class="text-lg font-medium text-gray-900">
+                    <%= @user&.first_name %> <%= @user&.last_name %>
+                  </h2>
+                  <p class="text-sm text-gray-500">Online</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-3">
+                <button class="text-gray-400 hover:text-gray-600">
+                  <i class="fas fa-phone"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600">
+                  <i class="fas fa-video"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Messages Area -->
+          <div class="flex-1 overflow-y-auto px-6 py-4" style="height: calc(100% - 160px)">
+            <%= turbo_stream_from @single_room %>
+            <div id="messages" class="space-y-4" data-controller="scroll">
+              <% if @messages %>
+                <%= render @messages %>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Message Input -->
+          <div class="px-6 py-4 border-t border-gray-100">
+            <% if @rooms.exists? %>
+              <%= render partial: 'layouts/new_message_form' %>
+            <% end %>
+          </div>
         </div>
-      </div>
-      
-      <!-- Chat Footer -->
-      <div class="card-footer">
-        <% if @rooms.exists? %>
-          <%= render partial: 'layouts/new_message_form' %>
-        <% end %>
       </div>
     </div>
   </div>
 </div>
 
+<!-- New Room Modal -->
+<div class="modal fade" id="newRoomModal" tabindex="-1" aria-labelledby="newRoomModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newRoomModalLabel">Create New Room</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render partial: "layouts/new_room_form" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :styles do %>
+  <style>
+    /* Custom scrollbar for Webkit browsers */
+    .overflow-y-auto::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .overflow-y-auto::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .overflow-y-auto::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 3px;
+    }
+
+    .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+      background: #a0aec0;
+    }
+  </style>
+<% end %>

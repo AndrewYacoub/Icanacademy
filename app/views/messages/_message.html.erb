@@ -1,34 +1,80 @@
-<div class="cont-<%= message.user.id %> mb-3">
-  <div class="message-box msg-<%= message.user.id %> p-3 rounded shadow-sm bg-light text-dark">
-    <div class="d-flex align-items-center mb-2">
+<div class="message-container mb-4 <%= message.user == current_user ? 'flex justify-end' : 'flex justify-start' %>">
+  <div class="max-w-[75%]">
+    <!-- Message Box -->
+    <div class="flex items-start space-x-2">
+      <!-- User Avatar -->
       <% unless message.room.is_private %>
-        <h6 class="name mb-0 color-white"><strong><%= message.user.type %>: <%= message.user.first_name %></strong></h6>
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            <i class="fas fa-user text-gray-500 text-sm"></i>
+          </div>
+        </div>
       <% end %>
-    </div>
-    
-    <!-- Message Content -->
-    <p class="mb-0"><%= message.content %></p>
 
-    <!-- Attached File Link -->
-    <% if message.file.attached? %>
-      <a href="<%= url_for(message.file) %>" download class="btn btn-success btn-sm mt-2">
-        <%= message.file.filename %>
-      </a>
-    <% end %>
+      <!-- Message Content -->
+      <div class="flex flex-col">
+        <!-- User Name -->
+        <% unless message.room.is_private %>
+          <div class="text-xs text-gray-500 mb-1">
+            <span class="font-medium">
+              <%= message.user.type %>: <%= message.user.first_name %>
+            </span>
+            <span class="ml-2 text-gray-400">
+              <%= message.created_at.strftime("%I:%M %p") %>
+            </span>
+          </div>
+        <% end %>
 
-    <!-- Audio Element -->
-    <% if message.audio.attached? %>
-      <div class="audio-container mt-3">
-        <audio controls class="w-100">
-          <source src="<%= url_for(message.audio) %>" type="audio/wav">
-          Your browser does not support the audio element.
-        </audio>
+        <!-- Message Bubble -->
+        <div class="<%= message.user == current_user ? 
+          'bg-primary-600 text-white' : 
+          'bg-white border border-gray-200 text-gray-900' %> 
+          rounded-lg px-4 py-2 shadow-sm">
+          <!-- Text Content -->
+          <p class="text-sm whitespace-pre-wrap break-words"><%= message.content %></p>
+
+          <!-- Attachments -->
+          <% if message.file.attached? || message.audio.attached? %>
+            <div class="mt-2 pt-2 border-t <%= message.user == current_user ? 'border-primary-500' : 'border-gray-200' %>">
+              <!-- File Attachment -->
+              <% if message.file.attached? %>
+                <%= link_to url_for(message.file), 
+                    class: "inline-flex items-center px-3 py-1 rounded-md text-sm
+                      #{message.user == current_user ? 
+                        'bg-primary-500 text-white hover:bg-primary-400' : 
+                        'bg-gray-100 text-gray-700 hover:bg-gray-200'}
+                      transition-colors duration-150",
+                    download: true do %>
+                  <i class="fas fa-download mr-2"></i>
+                  <span class="truncate max-w-xs"><%= message.file.filename %></span>
+                <% end %>
+              <% end %>
+
+              <!-- Audio Attachment -->
+              <% if message.audio.attached? %>
+                <div class="mt-2">
+                  <div class="rounded-lg overflow-hidden <%= message.user == current_user ? 'bg-primary-500' : 'bg-gray-100' %> p-2">
+                    <audio controls class="w-full h-8">
+                      <source src="<%= url_for(message.audio) %>" type="audio/wav">
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Message Status -->
+        <% if message.user == current_user %>
+          <div class="flex justify-end mt-1">
+            <span class="text-xs text-gray-400">
+              <%= message.created_at.strftime("%I:%M %p") %>
+              <i class="fas fa-check ml-1"></i>
+            </span>
+          </div>
+        <% end %>
       </div>
-    <% end %>
-    
+    </div>
   </div>
 </div>
-
-
-
-
